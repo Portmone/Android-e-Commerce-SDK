@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:padding="16dp">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:gravity="center_horizontal"
+			android:text="Please use only hex colors ex.: #70ec84"
+			android:textIsSelectable="true"
+			android:textSize="24sp" />
+
+		<EditText
+			android:id="@+id/et_background"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Background color" />
+
+		<EditText
+			android:id="@+id/et_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Toolbar color" />
+
+		<EditText
+			android:id="@+id/et_btn_back"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Button color" />
+
+		<EditText
+			android:id="@+id/et_btn_back_pressed"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Button color pressed" />
+
+		<EditText
+			android:id="@+id/et_btn_text"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Button text" />
+
+		<EditText
+			android:id="@+id/et_btn_text_pressed"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Button text pressed" />
+
+		<EditText
+			android:id="@+id/et_input_txt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Input text color" />
+
+		<EditText
+			android:id="@+id/et_input_hint"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Input hint color" />
+
+		<EditText
+			android:id="@+id/et_input_error"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Input error color" />
+
+		<EditText
+			android:id="@+id/et_block_title_txt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Block title text color" />
+
+		<EditText
+			android:id="@+id/et_background_input"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Block title background color" />
+
+		<EditText
+			android:id="@+id/et_title_txt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Title text color" />
+
+		<EditText
+			android:id="@+id/et_description_txt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Description text color" />
+
+		<EditText
+			android:id="@+id/et_additional_info"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Additional info text color" />
+
+		<EditText
+			android:id="@+id/et_dialog_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Dialog title text color" />
+
+		<EditText
+			android:id="@+id/et_dialog_description"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Dialog description text color" />
+
+		<Button
+			android:id="@+id/btn_submit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginTop="16dp"
+			android:onClick="onClick"
+			android:text="submit" />
+	</LinearLayout>
+</ScrollView>
