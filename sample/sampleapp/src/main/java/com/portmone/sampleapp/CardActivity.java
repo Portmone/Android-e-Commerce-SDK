@@ -47,6 +47,7 @@ import static com.portmone.ecomsdk.util.Constant$BillCurrency.USD;
 import static com.portmone.ecomsdk.util.Constant$Language.EN;
 import static com.portmone.ecomsdk.util.Constant$Language.RU;
 import static com.portmone.ecomsdk.util.Constant$Language.UK;
+import static com.portmone.ecomsdk.util.Constant$Language.SYSTEM;
 
 
 public class CardActivity
@@ -74,7 +75,10 @@ public class CardActivity
 
 	@Constant$Language
 	private String[] languages = new String[] {
-			UK, EN, RU
+			SYSTEM,
+			UK,
+			EN,
+			RU
 	};
 
 	@Override
@@ -99,7 +103,9 @@ public class CardActivity
 
 		ArrayAdapter<String> languages = new ArrayAdapter<>(this, R.layout.layout_spinner, R.id.txt_spinner);
 		languages.add("System");
-		languages.addAll(this.languages);
+		languages.add(this.languages[1]);
+		languages.add(this.languages[2]);
+		languages.add(this.languages[3]);
 
 		spCurrency.setAdapter(currencies);
 		spCurrency.setSelection(0);
@@ -114,9 +120,7 @@ public class CardActivity
 		switch (v.getId()) {
 			case R.id.btn_open_payment_screen:
 				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-				if (selectedLanguageId != 0) {
-					PortmoneSDK.setLanguage(languages[selectedLanguageId - 1]);
-				}
+				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
 				if (etAmount.getText().toString().equals("")) {
 					Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
 					return;

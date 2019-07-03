@@ -47,6 +47,7 @@ import static com.portmone.ecomsdk.util.Constant$BillCurrency.UAH;
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.USD;
 import static com.portmone.ecomsdk.util.Constant$Language.EN;
 import static com.portmone.ecomsdk.util.Constant$Language.RU;
+import static com.portmone.ecomsdk.util.Constant$Language.SYSTEM;
 import static com.portmone.ecomsdk.util.Constant$Language.UK;
 
 public class PreauthCardPreActivity
@@ -64,8 +65,11 @@ public class PreauthCardPreActivity
 	};
 
 	@Constant$Language
-	private String[] languages = new String[]{
-			UK, EN, RU
+	private String[] languages = new String[] {
+			SYSTEM,
+			UK,
+			EN,
+			RU
 	};
 
 	@Override
@@ -84,7 +88,9 @@ public class PreauthCardPreActivity
 
 		ArrayAdapter<String> languages = new ArrayAdapter<>(this, R.layout.layout_spinner, R.id.txt_spinner);
 		languages.add("System");
-		languages.addAll(this.languages);
+		languages.add(this.languages[1]);
+		languages.add(this.languages[2]);
+		languages.add(this.languages[3]);
 
 		spLanguage.setAdapter(languages);
 		spLanguage.setSelection(0);
@@ -96,9 +102,8 @@ public class PreauthCardPreActivity
 		switch (v.getId()) {
 			case R.id.btn_open_preauth:
 				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-				if (selectedLanguageId != 0) {
-					PortmoneSDK.setLanguage(languages[selectedLanguageId - 1]);
-				}
+				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
+
 
 				final SaveCardParams bigParams = new SaveCardParams(
 						etPayeeId.getText().toString(),
