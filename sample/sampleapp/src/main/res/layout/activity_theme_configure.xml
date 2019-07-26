@@ -57,6 +57,12 @@
 			android:hint="Button text pressed" />
 
 		<EditText
+			android:id="@+id/et_fp_btn_text"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Fingerprint button text color" />
+
+		<EditText
 			android:id="@+id/et_input_txt"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -115,6 +121,12 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:hint="Dialog description text color" />
+
+		<EditText
+			android:id="@+id/et_dialog_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Dialog button text color" />
 
 		<Button
 			android:id="@+id/btn_submit"

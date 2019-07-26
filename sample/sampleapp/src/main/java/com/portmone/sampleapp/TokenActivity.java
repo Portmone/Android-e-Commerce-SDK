@@ -64,6 +64,7 @@ public class TokenActivity
 	private EditText etAttribute4;
 	private EditText etAmount;
 	private CheckBox cbPreauth;
+	private CheckBox cbFingerprint;
 	private TextView tvResult;
 
 	@Constant$BillCurrency
@@ -73,10 +74,7 @@ public class TokenActivity
 
 	@Constant$Language
 	private String[] languages = new String[] {
-			SYSTEM,
-			UK,
-			EN,
-			RU
+			SYSTEM, UK, EN, RU
 	};
 	private String card;
 	private String token;
@@ -85,7 +83,7 @@ public class TokenActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_card);
+		setContentView(R.layout.activity_token);
 
 		SharedPreferences prefs = getSharedPreferences("test", MODE_PRIVATE);
 		id = prefs.getString("id", null);
@@ -104,6 +102,7 @@ public class TokenActivity
 		spCurrency = findViewById(R.id.sp_currency);
 		spLanguage = findViewById(R.id.sp_language);
 		cbPreauth = findViewById(R.id.cb_preauth);
+		cbFingerprint = findViewById(R.id.cb_fingerprint);
 
 		ArrayAdapter<String> currencies = new ArrayAdapter<>(this, R.layout.layout_spinner, R.id.txt_spinner);
 		currencies.addAll(this.currencies);
@@ -133,13 +132,16 @@ public class TokenActivity
 					Toast.makeText(this, "No saved card", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
-
 				if (etAmount.getText().toString().equals("")) {
 					Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
 					return;
 				}
+
+				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
+				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
+
+				PortmoneSDK.setFingerprintPaymentEnable(cbFingerprint.isChecked());
+
 
 				final TokenPaymentParams bigParams = new TokenPaymentParams(
 						etPayeeId.getText().toString(),

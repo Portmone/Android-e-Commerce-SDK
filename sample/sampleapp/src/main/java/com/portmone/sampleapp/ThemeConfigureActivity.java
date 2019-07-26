@@ -21,7 +21,8 @@ import android.widget.EditText;
 import com.portmone.ecomsdk.data.style.AppStyle;
 import com.portmone.ecomsdk.data.style.BlockTitleTextStyle;
 import com.portmone.ecomsdk.data.style.ButtonStyle;
-import com.portmone.ecomsdk.data.style.DialogInfoStyle;
+
+import com.portmone.ecomsdk.data.style.DialogStyle;
 import com.portmone.ecomsdk.data.style.EditTextStyle;
 import com.portmone.ecomsdk.data.style.TextStyle;
 
@@ -38,6 +39,7 @@ public class ThemeConfigureActivity
 	EditText etBtnBackgroundPressed;
 	EditText etBtnText;
 	EditText etBtnTextPressed;
+	EditText etFPBtnText;
 	EditText etInputText;
 	EditText etInputHint;
 	EditText etInputError;
@@ -47,6 +49,7 @@ public class ThemeConfigureActivity
 	EditText etAddInfo;
 	EditText etDialogTitle;
 	EditText etDialogDescription;
+	EditText etDialogButton;
 	private AppStyle appStyle = new AppStyle();
 
 	@Override
@@ -61,6 +64,7 @@ public class ThemeConfigureActivity
 		etBtnBackgroundPressed = findViewById(R.id.et_btn_back_pressed);
 		etBtnText = findViewById(R.id.et_btn_text);
 		etBtnTextPressed = findViewById(R.id.et_btn_text_pressed);
+		etFPBtnText = findViewById(R.id.et_fp_btn_text);
 		etInputText = findViewById(R.id.et_input_txt);
 		etInputHint = findViewById(R.id.et_input_hint);
 		etInputError = findViewById(R.id.et_input_error);
@@ -70,6 +74,7 @@ public class ThemeConfigureActivity
 		etAddInfo = findViewById(R.id.et_additional_info);
 		etDialogTitle = findViewById(R.id.et_dialog_title);
 		etDialogDescription = findViewById(R.id.et_dialog_description);
+		etDialogButton = findViewById(R.id.et_dialog_button);
 	}
 
 	@Override
@@ -82,6 +87,7 @@ public class ThemeConfigureActivity
 			fillTextBlockStyle();
 			fillTextTitleStyle();
 			fillTextStyle();
+			fillFPButtonStyle();
 			fillAddInfoTextStyle();
 			fillDialogTextStyle();
 
@@ -90,6 +96,13 @@ public class ThemeConfigureActivity
 			setResult(RESULT_OK, intent);
 			finish();
 		}
+	}
+
+	private void fillFPButtonStyle() {
+		TextStyle txtStyle = new TextStyle();
+		txtStyle.setTextColor(getColor(etFPBtnText));
+
+		appStyle.setFingerprintButton(txtStyle);
 	}
 
 	private int getColor(EditText et) {
@@ -144,16 +157,22 @@ public class ThemeConfigureActivity
 	}
 
 	private void fillDialogTextStyle() {
-		DialogInfoStyle dialogInfoStyle = new DialogInfoStyle();
+		DialogStyle dialogStyle = new DialogStyle();
+
 		TextStyle txtTitle = new TextStyle();
 		txtTitle.setTextColor(getColor(etDialogTitle));
 
 		TextStyle txtDescription = new TextStyle();
 		txtDescription.setTextColor(getColor(etDialogDescription));
-		dialogInfoStyle.setTitle(txtTitle);
-		dialogInfoStyle.setDescription(txtDescription);
 
-		appStyle.setDialogInfoStyle(dialogInfoStyle);
+		TextStyle txtButton = new TextStyle();
+		txtButton.setTextColor(getColor(etDialogButton));
+
+		dialogStyle.setTitle(txtTitle);
+		dialogStyle.setDescription(txtDescription);
+		dialogStyle.setButton(txtButton);
+
+		appStyle.setDialogStyle(dialogStyle);
 	}
 
 	private void fillTextStyle() {
