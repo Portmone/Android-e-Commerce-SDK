@@ -27,4 +27,11 @@
 		android:layout_height="wrap_content"
 		android:onClick="onClick"
 		android:text="Token payment" />
+
+	<Button
+		android:id="@+id/token_transfer"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:onClick="onClick"
+		android:text="Token transfer"/>
 </LinearLayout>

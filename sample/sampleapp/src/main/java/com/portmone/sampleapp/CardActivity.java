@@ -16,7 +16,6 @@ package com.portmone.sampleapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -25,17 +24,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.portmone.ecomsdk.PortmoneSDK;
 import com.portmone.ecomsdk.data.Bill;
 import com.portmone.ecomsdk.data.CardPaymentParams;
 import com.portmone.ecomsdk.data.style.AppStyle;
-import com.portmone.ecomsdk.ui.card_payment.CardPaymentActivity;
+import com.portmone.ecomsdk.ui.card.CardPaymentActivity;
 import com.portmone.ecomsdk.util.Constant$BillCurrency;
 import com.portmone.ecomsdk.util.Constant$ExtraKey;
 import com.portmone.ecomsdk.util.Constant$Language;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.BYN;
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.EUR;
@@ -46,8 +45,8 @@ import static com.portmone.ecomsdk.util.Constant$BillCurrency.UAH;
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.USD;
 import static com.portmone.ecomsdk.util.Constant$Language.EN;
 import static com.portmone.ecomsdk.util.Constant$Language.RU;
-import static com.portmone.ecomsdk.util.Constant$Language.UK;
 import static com.portmone.ecomsdk.util.Constant$Language.SYSTEM;
+import static com.portmone.ecomsdk.util.Constant$Language.UK;
 
 
 public class CardActivity

@@ -27,11 +27,10 @@ import com.portmone.ecomsdk.PortmoneSDK;
 import com.portmone.ecomsdk.data.Bill;
 import com.portmone.ecomsdk.data.SaveCardParams;
 import com.portmone.ecomsdk.data.style.AppStyle;
-import com.portmone.ecomsdk.ui.preauth_card.PreauthCardActivity;
+import com.portmone.ecomsdk.ui.savecard.PreauthCardActivity;
 import com.portmone.ecomsdk.util.Constant$BillCurrency;
 import com.portmone.ecomsdk.util.Constant$ExtraKey;
 import com.portmone.ecomsdk.util.Constant$Language;
-import com.portmone.sampleapp.R;
 
 import java.util.Calendar;
 

@@ -23,5 +23,6 @@
 		<activity android:name=".ThemeConfigureActivity" />
 		<activity android:name=".PreauthCardPreActivity" />
 		<activity android:name=".TokenActivity" />
+		<activity android:name=".TokenTransferActivity" />
 	</application>
 </manifest>

@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 			startActivity(new Intent(this, PreauthCardPreActivity.class));
 		} else if (view.getId() == R.id.token) {
 			startActivity(new Intent(this, TokenActivity.class));
+		} else if (view.getId() == R.id.token_transfer) {
+			startActivity(new Intent(this, TokenTransferActivity.class));
 		}
 	}
 }
