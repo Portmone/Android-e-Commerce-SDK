@@ -45,6 +45,13 @@
 			android:hint="Button color pressed" />
 
 		<EditText
+			android:id="@+id/et_btn_corner_radius"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Button corner radius"
+			android:inputType="numberDecimal" />
+
+		<EditText
 			android:id="@+id/et_btn_text"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -109,6 +116,12 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:hint="Additional info text color" />
+
+		<EditText
+			android:id="@+id/et_payment_success_download"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Payment success download text color" />
 
 		<EditText
 			android:id="@+id/et_dialog_title"

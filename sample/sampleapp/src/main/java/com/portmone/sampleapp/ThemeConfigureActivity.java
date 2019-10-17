@@ -39,6 +39,7 @@ public class ThemeConfigureActivity
 	EditText etBtnBackgroundPressed;
 	EditText etBtnText;
 	EditText etBtnTextPressed;
+	EditText etBtnCornerRadius;
 	EditText etFPBtnText;
 	EditText etInputText;
 	EditText etInputHint;
@@ -47,6 +48,7 @@ public class ThemeConfigureActivity
 	EditText etTitle;
 	EditText etDescription;
 	EditText etAddInfo;
+	EditText etPaymentSuccessDownload;
 	EditText etDialogTitle;
 	EditText etDialogDescription;
 	EditText etDialogButton;
@@ -62,6 +64,7 @@ public class ThemeConfigureActivity
 		etBackgroundSecondary = findViewById(R.id.et_background_input);
 		etBtnBackground = findViewById(R.id.et_btn_back);
 		etBtnBackgroundPressed = findViewById(R.id.et_btn_back_pressed);
+		etBtnCornerRadius = findViewById(R.id.et_btn_corner_radius);
 		etBtnText = findViewById(R.id.et_btn_text);
 		etBtnTextPressed = findViewById(R.id.et_btn_text_pressed);
 		etFPBtnText = findViewById(R.id.et_fp_btn_text);
@@ -72,6 +75,7 @@ public class ThemeConfigureActivity
 		etTitle = findViewById(R.id.et_title_txt);
 		etDescription = findViewById(R.id.et_description_txt);
 		etAddInfo = findViewById(R.id.et_additional_info);
+		etPaymentSuccessDownload = findViewById(R.id.et_payment_success_download);
 		etDialogTitle = findViewById(R.id.et_dialog_title);
 		etDialogDescription = findViewById(R.id.et_dialog_description);
 		etDialogButton = findViewById(R.id.et_dialog_button);
@@ -89,6 +93,7 @@ public class ThemeConfigureActivity
 			fillTextStyle();
 			fillFPButtonStyle();
 			fillAddInfoTextStyle();
+			fillPaymentSuccessDownload();
 			fillDialogTextStyle();
 
 			Intent intent = new Intent();
@@ -130,7 +135,10 @@ public class ThemeConfigureActivity
 		btnStyle.setTextColorPressed(getColor(etBtnTextPressed));
 		btnStyle.setBackgroundColor(getColor(etBtnBackground));
 		btnStyle.setBackgroundColorPressed(getColor(etBtnBackgroundPressed));
-
+		try {
+			btnStyle.setCornerRadius(Float.parseFloat(etBtnCornerRadius.getText().toString()));
+		} catch (Exception ignore) {
+		}
 		appStyle.setButtonStyle(btnStyle);
 	}
 
@@ -154,6 +162,13 @@ public class ThemeConfigureActivity
 		txtStyle.setTextColor(getColor(etAddInfo));
 
 		appStyle.setAdditionalInfoTextStyle(txtStyle);
+	}
+
+	private void fillPaymentSuccessDownload() {
+		TextStyle txtStyle = new TextStyle();
+		txtStyle.setTextColor(getColor(etPaymentSuccessDownload));
+
+		appStyle.setPaymentSuccessDownload(txtStyle);
 	}
 
 	private void fillDialogTextStyle() {

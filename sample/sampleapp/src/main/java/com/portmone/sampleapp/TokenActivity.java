@@ -32,6 +32,7 @@ import com.portmone.ecomsdk.ui.token.payment.TokenPaymentActivity;
 import com.portmone.ecomsdk.util.Constant$BillCurrency;
 import com.portmone.ecomsdk.util.Constant$ExtraKey;
 import com.portmone.ecomsdk.util.Constant$Language;
+import com.portmone.ecomsdk.util.Constant$Type;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +56,7 @@ public class TokenActivity
 
 	private Spinner spCurrency;
 	private Spinner spLanguage;
+	private Spinner spTypes;
 	private EditText etPayeeId;
 	private EditText etDescription;
 	private EditText etBillNumber;
@@ -76,6 +78,17 @@ public class TokenActivity
 	private String[] languages = new String[] {
 			SYSTEM, UK, EN, RU
 	};
+	@Constant$Type
+	private int[] types = new int[]{
+			Constant$Type.DEFAULT,
+			Constant$Type.PHONE
+	};
+
+	private String[] typesTxt = new String[]{
+			"DEFAULT",
+			"PHONE"
+	};
+
 	private String card;
 	private String token;
 	private String id;
@@ -101,6 +114,7 @@ public class TokenActivity
 		etAmount = findViewById(R.id.et_amount);
 		spCurrency = findViewById(R.id.sp_currency);
 		spLanguage = findViewById(R.id.sp_language);
+		spTypes = findViewById(R.id.sp_types);
 		cbPreauth = findViewById(R.id.cb_preauth);
 		cbFingerprint = findViewById(R.id.cb_fingerprint);
 
@@ -113,6 +127,9 @@ public class TokenActivity
 		languages.add(this.languages[2]);
 		languages.add(this.languages[3]);
 
+		ArrayAdapter<String> types = new ArrayAdapter<>(this, R.layout.layout_spinner, R.id.txt_spinner);
+		types.addAll(this.typesTxt);
+
 		spCurrency.setAdapter(currencies);
 		spCurrency.setSelection(0);
 
@@ -121,6 +138,9 @@ public class TokenActivity
 
 		etPayeeId.setText(id);
 		etPayeeId.setEnabled(false);
+
+		spTypes.setAdapter(types);
+		spTypes.setSelection(0);
 	}
 
 
@@ -142,6 +162,13 @@ public class TokenActivity
 
 				PortmoneSDK.setFingerprintPaymentEnable(cbFingerprint.isChecked());
 
+				final int selectedType = spTypes.getSelectedItemPosition();
+				AppStyle appStyle = PortmoneSDK.getAppStyle();
+				if (appStyle == null) {
+					appStyle = new AppStyle();
+				}
+				appStyle.setType(types[selectedType]);
+				PortmoneSDK.setAppStyle(appStyle);
 
 				final TokenPaymentParams bigParams = new TokenPaymentParams(
 						etPayeeId.getText().toString(),
