@@ -16,6 +16,7 @@ package com.portmone.sampleapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -58,14 +59,18 @@ public class CardActivity
 	private Spinner spCurrency;
 	private Spinner spLanguage;
 	private Spinner spTypes;
+	private EditText etUID;
 	private EditText etPayeeId;
-	private EditText etDescription;
 	private EditText etBillNumber;
+	private EditText etDescription;
 	private EditText etAttribute1;
 	private EditText etAttribute2;
 	private EditText etAttribute3;
 	private EditText etAttribute4;
 	private EditText etAmount;
+	private CheckBox cbGPayEnabled;
+	private CheckBox cbOnlyGooglePay;
+	private CheckBox cbGoogleTest;
 	private CheckBox cbPreauth;
 	private TextView tvResult;
 
@@ -77,27 +82,25 @@ public class CardActivity
 	@Constant$Language
 	private String[] languages = new String[] {
 			SYSTEM,
-			UK,
-			EN,
-			RU
+			UK, EN, RU
 	};
 
 	@Constant$Type
-	private int[] types = new int[]{
+	private int[] types = new int[] {
 			Constant$Type.DEFAULT,
 			Constant$Type.PHONE
 	};
 
-	private String[] typesTxt = new String[]{
+	private String[] typesTxt = new String[] {
 			"DEFAULT",
 			"PHONE"
 	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_card);
 		tvResult = findViewById(R.id.tv_result);
+		etUID = findViewById(R.id.et_uid);
 		etPayeeId = findViewById(R.id.et_payee_id);
 		etDescription = findViewById(R.id.et_description);
 		etBillNumber = findViewById(R.id.et_bill_number);
@@ -106,6 +109,9 @@ public class CardActivity
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
 		etAmount = findViewById(R.id.et_amount);
+		cbGPayEnabled = findViewById(R.id.cb_google_pay);
+		cbOnlyGooglePay = findViewById(R.id.cb_only_google_pay);
+		cbGoogleTest = findViewById(R.id.cb_test_google_pay);
 		spCurrency = findViewById(R.id.sp_currency);
 		spLanguage = findViewById(R.id.sp_language);
 		spTypes = findViewById(R.id.sp_types);
@@ -131,30 +137,46 @@ public class CardActivity
 
 		spTypes.setAdapter(types);
 		spTypes.setSelection(0);
-	}
 
+		cbGPayEnabled.setOnCheckedChangeListener((compoundButton, checked) -> {
+			if (checked) {
+				cbOnlyGooglePay.setEnabled(true);
+				cbGoogleTest.setEnabled(true);
+			} else {
+				cbOnlyGooglePay.setChecked(false);
+				cbGoogleTest.setChecked(false);
+				cbOnlyGooglePay.setEnabled(false);
+				cbGoogleTest.setEnabled(false);
+			}
+		});
+	}
 
 	@Override
 	public void onClick(final View v) {
-		switch (v.getId()) {
-			case R.id.btn_open_payment_screen:
-				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-				final int selectedType = spTypes.getSelectedItemPosition();
+		if (v.getId() == R.id.btn_open_payment_screen) {
+			final int selectedLanguageId = spLanguage.getSelectedItemPosition();
+			final int selectedType = spTypes.getSelectedItemPosition();
 
-				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
-				if (etAmount.getText().toString().equals("")) {
-					Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
-					return;
-				}
+			PortmoneSDK.setLanguage(languages[selectedLanguageId]);
 
-				AppStyle appStyle = PortmoneSDK.getAppStyle();
-				if (appStyle == null) {
-					appStyle = new AppStyle();
-				}
-				appStyle.setType(types[selectedType]);
-				PortmoneSDK.setAppStyle(appStyle);
+			String uid = etUID.getText().toString();
+			if (TextUtils.isEmpty(uid)) uid = null;
+			PortmoneSDK.setUid(uid);
 
-				final CardPaymentParams bigParams = new CardPaymentParams(
+			AppStyle appStyle = PortmoneSDK.getAppStyle();
+			if (appStyle == null) {
+				appStyle = new AppStyle();
+			}
+			appStyle.setType(types[selectedType]);
+			PortmoneSDK.setAppStyle(appStyle);
+
+			if (etAmount.getText().toString().equals("")) {
+				Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			final CardPaymentParams bigParams;
+			if (cbGPayEnabled.isChecked()) {
+				bigParams = new CardPaymentParams(
 						etPayeeId.getText().toString(),
 						etBillNumber.getText().toString(),
 						cbPreauth.isChecked(),
@@ -164,19 +186,27 @@ public class CardActivity
 						etAttribute3.getText().toString(),
 						etAttribute4.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
-						etDescription.getText().toString()
+						etDescription.getText().toString(),
+						cbOnlyGooglePay.isChecked(),
+						cbGoogleTest.isChecked()
 				);
-				CardPaymentActivity.performTransaction(
-						this,
-						111,
-						bigParams
-				);
-				break;
-			case R.id.btn_open_theme_screen:
-
-				startActivityForResult(new Intent(this, ThemeConfigureActivity.class), 112);
-				break;
-
+			} else {
+				bigParams = new CardPaymentParams(etPayeeId.getText().toString(),
+						etBillNumber.getText().toString(),
+						cbPreauth.isChecked(),
+						currencies[spCurrency.getSelectedItemPosition()],
+						etAttribute1.getText().toString(),
+						etAttribute2.getText().toString(),
+						etAttribute3.getText().toString(),
+						etAttribute4.getText().toString(),
+						Double.parseDouble(etAmount.getText().toString()),
+						etDescription.getText().toString());
+			}
+			CardPaymentActivity.performTransaction(
+					this,
+					111,
+					bigParams
+			);
 		}
 	}
 
@@ -186,13 +216,15 @@ public class CardActivity
 	) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+
 		if (requestCode == 111 && resultCode == RESULT_OK && data != null) {
 			final Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
 			tvResult.setText("Payment result:\n" + bill.toString());
-			saveCard(bill);
-		}
-		if (requestCode == 112 && resultCode == RESULT_OK && data != null && data.hasExtra(ThemeConfigureActivity.APP_STYLE)) {
-			PortmoneSDK.setAppStyle((AppStyle) data.getSerializableExtra(ThemeConfigureActivity.APP_STYLE));
+
+			boolean paidThroughGooglePay = data.getBooleanExtra(Constant$ExtraKey.PAID_WITH_GOOGLE_PAY, false);
+			if (!paidThroughGooglePay) {
+				saveCard(bill);
+			}
 		}
 	}
 

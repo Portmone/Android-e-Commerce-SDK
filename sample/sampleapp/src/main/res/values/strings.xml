@@ -1,3 +1,9 @@
 <resources>
-	<string name="app_name">Portmone E-commerce</string>
+	<string name="app_name">My Application</string>
+	<string name="error_format">Error: %s</string>
+	<string name="verify_2d_format">Last p57_2 response: %s</string>
+	<string name="verify_3d_format">Last 3d ss url: %s</string>
+	<string name="txt_type">Selected type: %s</string>
+	<string name="txt_type_default">DEFAULT</string>
+	<string name="txt_type_phone">PHONE</string>
 </resources>

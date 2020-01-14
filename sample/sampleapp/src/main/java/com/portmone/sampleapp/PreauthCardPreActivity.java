@@ -16,6 +16,7 @@ package com.portmone.sampleapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -54,6 +55,7 @@ public class PreauthCardPreActivity
 		implements View.OnClickListener {
 
 	private Spinner spLanguage;
+	private EditText etUID;
 	private EditText etPayeeId;
 	private EditText etDescription;
 	private TextView tvResult;
@@ -64,11 +66,8 @@ public class PreauthCardPreActivity
 	};
 
 	@Constant$Language
-	private String[] languages = new String[] {
-			SYSTEM,
-			UK,
-			EN,
-			RU
+	private String[] languages = new String[]{
+			SYSTEM, UK, EN, RU
 	};
 
 	@Override
@@ -76,6 +75,7 @@ public class PreauthCardPreActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preauth_main);
 		tvResult = findViewById(R.id.tv_result);
+		etUID = findViewById(R.id.et_uid);
 		etPayeeId = findViewById(R.id.et_payee_id);
 
 		etDescription = findViewById(R.id.et_description);
@@ -98,29 +98,26 @@ public class PreauthCardPreActivity
 
 	@Override
 	public void onClick(final View v) {
-		switch (v.getId()) {
-			case R.id.btn_open_preauth:
-				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
+		if (v.getId() == R.id.btn_open_preauth) {
+			String uid = etUID.getText().toString();
+			if (TextUtils.isEmpty(uid)) uid = null;
+			PortmoneSDK.setUid(uid);
 
 
-				final SaveCardParams bigParams = new SaveCardParams(
-						etPayeeId.getText().toString(),
-						etDescription.getText().toString(),
-						generateNumber()
-				);
+			final int selectedLanguageId = spLanguage.getSelectedItemPosition();
+			PortmoneSDK.setLanguage(languages[selectedLanguageId]);
 
-				PreauthCardActivity.performTransaction(
-						this,
-						113,
-						bigParams
-				);
-				break;
-			case R.id.btn_open_theme_screen:
+			final SaveCardParams bigParams = new SaveCardParams(
+					etPayeeId.getText().toString(),
+					etDescription.getText().toString(),
+					generateNumber()
+			);
 
-				startActivityForResult(new Intent(this, ThemeConfigureActivity.class), 112);
-				break;
-
+			PreauthCardActivity.performTransaction(
+					this,
+					113,
+					bigParams
+			);
 		}
 	}
 
@@ -135,18 +132,10 @@ public class PreauthCardPreActivity
 			final int requestCode, final int resultCode, @Nullable final Intent data
 	) {
 		super.onActivityResult(requestCode, resultCode, data);
-
 		if (requestCode == 113 && resultCode == RESULT_OK && data != null) {
 			final Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-			Log.d(
-					"PaymentActivity",
-					"onActivityResult:" + bill.toString()
-			);
 			saveCard(bill);
 			tvResult.setText("Payment result:\n" + bill.toString());
-		}
-		if (requestCode == 112 && resultCode == RESULT_OK && data != null && data.hasExtra(ThemeConfigureActivity.APP_STYLE)) {
-			PortmoneSDK.setAppStyle((AppStyle) data.getSerializableExtra(ThemeConfigureActivity.APP_STYLE));
 		}
 	}
 

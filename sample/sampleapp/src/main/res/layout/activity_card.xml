@@ -1,162 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="16dp"
-	android:fillViewport="true">
+	android:orientation="vertical">
 
-	<LinearLayout
+	<androidx.appcompat.widget.Toolbar
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_horizontal"
-		android:orientation="vertical"
-		tools:context=".PaymentActivity">
+		android:layout_height="?attr/actionBarSize"
+		android:background="@color/colorPrimary"
+		android:elevation="8dp"
+		app:title="Pay with manual input card"
+		app:titleTextColor="@color/white"
+		tools:targetApi="lollipop" />
 
-
-		<TextView
-			android:id="@+id/tv_result"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"
-			android:textIsSelectable="true"/>
-
-		<EditText
-			android:id="@+id/et_payee_id"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:inputType="number"
-			android:hint="Payee id"/>
-
-		<EditText
-			android:id="@+id/et_bill_number"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:inputType="numberDecimal"
-			android:layout_marginTop="8dp"
-			android:hint="Bill number"/>
-
-		<EditText
-			android:id="@+id/et_description"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:hint="Description"/>
-
-		<EditText
-			android:id="@+id/et_attribute_1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:hint="Attribute 1"/>
-
-		<EditText
-			android:id="@+id/et_attribute_2"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:hint="Attribute 2"/>
-
-		<EditText
-			android:id="@+id/et_attribute_3"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:hint="Attribute 3"/>
-
-		<EditText
-			android:id="@+id/et_attribute_4"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:hint="Attribute 4"/>
-
-		<EditText
-			android:id="@+id/et_amount"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:inputType="numberDecimal"
-			android:layout_marginTop="8dp"
-			android:hint="Amount"/>
-
-		<CheckBox
-			android:id="@+id/cb_preauth"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:layout_gravity="start"
-			android:text="preauth"/>
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fillViewport="true"
+		android:overScrollMode="never"
+		android:scrollbars="none">
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
-
-			android:layout_marginTop="8dp">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginEnd="16dp"
-				android:text="Currency:"/>
-			<Spinner
-				android:id="@+id/sp_currency"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
-			android:layout_marginTop="8dp">
+			android:gravity="center_horizontal"
+			android:orientation="vertical"
+			android:padding="16dp"
+			tools:context=".PaymentActivity">
 
 			<TextView
+				android:id="@+id/tv_result"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="monospace"
+				android:textIsSelectable="true"
+				android:textSize="10sp" />
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_uid"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Custom UID" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_payee_id"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Payee id"
+					android:inputType="number" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_bill_number"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Bill number"
+					android:inputType="numberDecimal" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_description"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Description" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_attribute_1"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Attribute 1" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_attribute_2"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Attribute 2" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_attribute_3"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Attribute 3" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_attribute_4"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Attribute 4" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_amount"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Amount"
+					android:inputType="numberDecimal"
+					android:text="1" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<CheckBox
+				android:id="@+id/cb_preauth"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="16dp"
-				android:text="Language:"/>
-			<Spinner
-				android:id="@+id/sp_language"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-		</LinearLayout>
+				android:layout_gravity="start"
+				android:text="preauth" />
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			android:gravity="center_vertical">
-
-			<TextView
+			<CheckBox
+				android:id="@+id/cb_google_pay"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="16dp"
-				android:text="Type :" />
+				android:layout_gravity="start"
+				android:text="Pay with GPay" />
 
-			<Spinner
-				android:id="@+id/sp_types"
+			<CheckBox
+				android:id="@+id/cb_test_google_pay"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_gravity="start"
+				android:layout_marginTop="8dp"
+				android:enabled="false"
+				android:text="GPay test environment" />
+
+			<CheckBox
+				android:id="@+id/cb_only_google_pay"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="start"
+				android:layout_marginTop="8dp"
+				android:enabled="false"
+				android:text="Only GPay" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:gravity="center_vertical">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="16dp"
+					android:text="Currency:" />
+
+				<Spinner
+					android:id="@+id/sp_currency"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:gravity="center_vertical">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="16dp"
+					android:text="Language:" />
+
+				<Spinner
+					android:id="@+id/sp_language"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:gravity="center_vertical">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="16dp"
+					android:text="Type :" />
+
+				<Spinner
+					android:id="@+id/sp_types"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+			<Button
+				android:id="@+id/btn_open_payment_screen"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:onClick="onClick"
+				android:text="Proceed Payment" />
+
 		</LinearLayout>
-
-		<Button
-			android:id="@+id/btn_open_theme_screen"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"
-			android:onClick="onClick"
-			android:text="Configure colors"/>
-
-		<Button
-			android:id="@+id/btn_open_payment_screen"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="20dp"
-			android:onClick="onClick"
-			android:text="Proceed Payment"/>
-
-	</LinearLayout>
-</ScrollView>
+	</ScrollView>
+</LinearLayout>

@@ -4,6 +4,7 @@ package com.portmone.sampleapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,8 +34,9 @@ public class TokenTransferActivity
 
 
 	private Spinner spLanguage;
+	private EditText etUID;
 	private EditText etPayeeId;
-	private EditText etAttribute1;
+	//private EditText etAttribute1;
 	private EditText etAttribute2;
 	private EditText etAttribute3;
 	private EditText etAttribute4;
@@ -60,8 +62,9 @@ public class TokenTransferActivity
 		token = prefs.getString("token", null);
 
 		tvResult = findViewById(R.id.tv_result);
+		etUID = findViewById(R.id.et_uid);
 		etPayeeId = findViewById(R.id.et_payee_id);
-		etAttribute1 = findViewById(R.id.et_attribute_1);
+		//etAttribute1 = findViewById(R.id.et_attribute_1);
 		etAttribute2 = findViewById(R.id.et_attribute_2);
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
@@ -78,21 +81,22 @@ public class TokenTransferActivity
 		spLanguage.setAdapter(languages);
 		spLanguage.setSelection(0);
 
-//		etPayeeId.setText(id);
-//		etPayeeId.setEnabled(false);
 	}
 
 	@Override
 	public void onClick(final View v) {
 		switch (v.getId()) {
 			case R.id.btn_open_payment_screen:
-				if (card == null) {
+				if (id == null) {
 					Toast.makeText(this, "No saved card", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				String uid = etUID.getText().toString();
+				if (TextUtils.isEmpty(uid)) uid = null;
+				PortmoneSDK.setUid(uid);
+
 				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
 				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
-
 
 				double billAmount = 0;
 				try {
@@ -102,7 +106,6 @@ public class TokenTransferActivity
 				}
 				final TokenTransferParams bigParams = new TokenTransferParams(
 						etPayeeId.getText().toString(),
-						etAttribute1.getText().toString(),
 						etAttribute2.getText().toString(),
 						etAttribute3.getText().toString(),
 						etAttribute4.getText().toString(),
@@ -117,11 +120,6 @@ public class TokenTransferActivity
 						bigParams
 				);
 				break;
-			case R.id.btn_open_theme_screen:
-
-				startActivityForResult(new Intent(this, ThemeConfigureActivity.class), 112);
-				break;
-
 		}
 	}
 
@@ -130,17 +128,9 @@ public class TokenTransferActivity
 			final int requestCode, final int resultCode, @Nullable final Intent data
 	) {
 		super.onActivityResult(requestCode, resultCode, data);
-
 		if (requestCode == 114 && resultCode == RESULT_OK && data != null) {
 			final Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-			Log.d(
-					"PaymentActivity",
-					"onActivityResult:" + bill.toString()
-			);
 			tvResult.setText("Payment result:\n" + bill.toString());
-		}
-		if (requestCode == 112 && resultCode == RESULT_OK && data != null && data.hasExtra(ThemeConfigureActivity.APP_STYLE)) {
-			PortmoneSDK.setAppStyle((AppStyle) data.getSerializableExtra(ThemeConfigureActivity.APP_STYLE));
 		}
 	}
 }

@@ -1,153 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context=".ThemeConfigureActivity">
 
 	<LinearLayout
-
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-		android:padding="16dp">
+		android:layout_height="?attr/actionBarSize"
+		android:background="@color/colorPrimary"
+		android:elevation="8dp"
+		tools:ignore="UnusedAttribute">
 
 		<TextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_marginStart="16dp"
+			android:layout_weight="1"
+			android:text="Theme configuration"
+			android:textColor="@color/white"
+			android:textSize="20sp"
+			android:textStyle="bold" />
+
+		<ImageView
+			android:id="@+id/btn_clear"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:gravity="center_horizontal"
-			android:text="Please use only hex colors ex.: #70ec84"
-			android:textIsSelectable="true"
-			android:textSize="24sp" />
+			android:layout_gravity="center_vertical"
+			android:background="@drawable/selector_corners_dark"
+			android:clickable="true"
+			android:focusable="true"
+			android:onClick="onClick"
+			android:padding="12dp"
+			android:src="@drawable/ic_clear" />
 
-		<EditText
-			android:id="@+id/et_background"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Background color" />
-
-		<EditText
-			android:id="@+id/et_toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Toolbar color" />
-
-		<EditText
-			android:id="@+id/et_btn_back"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Button color" />
-
-		<EditText
-			android:id="@+id/et_btn_back_pressed"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Button color pressed" />
-
-		<EditText
-			android:id="@+id/et_btn_corner_radius"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Button corner radius"
-			android:inputType="numberDecimal" />
-
-		<EditText
-			android:id="@+id/et_btn_text"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Button text" />
-
-		<EditText
-			android:id="@+id/et_btn_text_pressed"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Button text pressed" />
-
-		<EditText
-			android:id="@+id/et_fp_btn_text"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Fingerprint button text color" />
-
-		<EditText
-			android:id="@+id/et_input_txt"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Input text color" />
-
-		<EditText
-			android:id="@+id/et_input_hint"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Input hint color" />
-
-		<EditText
-			android:id="@+id/et_input_error"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Input error color" />
-
-		<EditText
-			android:id="@+id/et_block_title_txt"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Block title text color" />
-
-		<EditText
-			android:id="@+id/et_background_input"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Block title background color" />
-
-		<EditText
-			android:id="@+id/et_title_txt"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Title text color" />
-
-		<EditText
-			android:id="@+id/et_description_txt"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Description text color" />
-
-		<EditText
-			android:id="@+id/et_additional_info"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Additional info text color" />
-
-		<EditText
-			android:id="@+id/et_payment_success_download"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Payment success download text color" />
-
-		<EditText
-			android:id="@+id/et_dialog_title"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Dialog title text color" />
-
-		<EditText
-			android:id="@+id/et_dialog_description"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Dialog description text color" />
-
-		<EditText
-			android:id="@+id/et_dialog_button"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Dialog button text color" />
-
-		<Button
+		<ImageView
 			android:id="@+id/btn_submit"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="16dp"
+			android:layout_gravity="center_vertical"
+			android:layout_marginEnd="4dp"
+			android:background="@drawable/selector_corners_dark"
+			android:clickable="true"
+			android:focusable="true"
 			android:onClick="onClick"
-			android:text="submit" />
+			android:padding="12dp"
+			android:src="@drawable/ic_save" />
 	</LinearLayout>
-</ScrollView>
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:clipToPadding="false"
+		android:fillViewport="true"
+		android:padding="16dp"
+		android:scrollbars="none">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_background"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Background color"
+				tools:ccv_color="?android:colorBackground" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Toolbar color"
+				tools:ccv_color="?android:colorBackground" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:boxBackgroundColor="@color/white">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_btn_corner_radius"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="Button corner radius(dp)"
+					android:inputType="numberDecimal" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_btn_color"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Button"
+				tools:ccv_color="@color/black" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_btn_color_pressed"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Button pressed"
+				tools:ccv_color="@color/black_pressed" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_btn_text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Button text"
+				tools:ccv_color="@color/white" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_btn_text_pressed"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Button text pressed"
+				tools:ccv_color="@color/three_quart_white" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_payment_divider"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Payment divider"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_fp_btn_text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Fingerprint button text"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_input_txt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Input text color"
+				tools:ccv_color="@color/accent" />
+
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_input_hint"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Input hint color"
+				tools:ccv_color="@color/accent" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_input_error"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Input error color"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_block_title_txt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Block title text"
+				tools:ccv_color="@color/accent" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_background_input"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Block title background"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_title_txt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Title text"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_description_txt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Description text"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_additional_info"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Additional info text"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_payment_success_download"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Payment success download text"
+				tools:ccv_color="@color/accent" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/divider_size"
+				android:background="@color/grey" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_dialog_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Dialog title text"
+				tools:ccv_color="@color/accent" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_dialog_description"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Dialog description text"
+				tools:ccv_color="@color/accent" />
+
+			<com.portmone.sampleapp.widget.ChooseColorView
+				android:id="@+id/ccv_dialog_button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="6dp"
+				android:text="Dialog button text"
+				tools:ccv_color="@color/accent" />
+
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
+

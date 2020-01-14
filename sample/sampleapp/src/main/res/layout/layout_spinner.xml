@@ -10,7 +10,6 @@
 		android:layout_height="wrap_content"
 		android:textSize="16sp"
 		android:textColor="#000"
-		android:padding="8dp"
-		/>
+		android:padding="8dp" />
 
 </FrameLayout>

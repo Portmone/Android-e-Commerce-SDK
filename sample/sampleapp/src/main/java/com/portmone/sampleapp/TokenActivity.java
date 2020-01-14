@@ -16,6 +16,7 @@ package com.portmone.sampleapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -58,13 +59,17 @@ public class TokenActivity
 	private Spinner spLanguage;
 	private Spinner spTypes;
 	private EditText etPayeeId;
+	private EditText etUID;
 	private EditText etDescription;
-	private EditText etBillNumber;
 	private EditText etAttribute1;
 	private EditText etAttribute2;
 	private EditText etAttribute3;
 	private EditText etAttribute4;
 	private EditText etAmount;
+	private EditText etBillNumber;
+	private CheckBox cbGPayEnabled;
+	private CheckBox cbOnlyGooglePay;
+	private CheckBox cbGoogleTest;
 	private CheckBox cbPreauth;
 	private CheckBox cbFingerprint;
 	private TextView tvResult;
@@ -78,13 +83,14 @@ public class TokenActivity
 	private String[] languages = new String[] {
 			SYSTEM, UK, EN, RU
 	};
+
 	@Constant$Type
-	private int[] types = new int[]{
+	private int[] types = new int[] {
 			Constant$Type.DEFAULT,
 			Constant$Type.PHONE
 	};
 
-	private String[] typesTxt = new String[]{
+	private String[] typesTxt = new String[] {
 			"DEFAULT",
 			"PHONE"
 	};
@@ -104,14 +110,18 @@ public class TokenActivity
 		token = prefs.getString("token", null);
 
 		tvResult = findViewById(R.id.tv_result);
+		etUID = findViewById(R.id.et_uid);
 		etPayeeId = findViewById(R.id.et_payee_id);
-		etDescription = findViewById(R.id.et_description);
 		etBillNumber = findViewById(R.id.et_bill_number);
+		etDescription = findViewById(R.id.et_description);
 		etAttribute1 = findViewById(R.id.et_attribute_1);
 		etAttribute2 = findViewById(R.id.et_attribute_2);
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
 		etAmount = findViewById(R.id.et_amount);
+		cbGPayEnabled = findViewById(R.id.cb_google_pay);
+		cbOnlyGooglePay = findViewById(R.id.cb_only_google_pay);
+		cbGoogleTest = findViewById(R.id.cb_test_google_pay);
 		spCurrency = findViewById(R.id.sp_currency);
 		spLanguage = findViewById(R.id.sp_language);
 		spTypes = findViewById(R.id.sp_types);
@@ -137,40 +147,89 @@ public class TokenActivity
 		spLanguage.setSelection(0);
 
 		etPayeeId.setText(id);
-		etPayeeId.setEnabled(false);
+		//etPayeeId.setEnabled(false);
 
 		spTypes.setAdapter(types);
 		spTypes.setSelection(0);
-	}
 
+
+		cbGPayEnabled.setOnCheckedChangeListener((compoundButton, checked) -> {
+			if (checked) {
+				cbOnlyGooglePay.setEnabled(true);
+				cbGoogleTest.setEnabled(true);
+				cbFingerprint.setEnabled(false);
+				cbFingerprint.setChecked(false);
+			} else {
+				cbOnlyGooglePay.setChecked(false);
+				cbGoogleTest.setChecked(false);
+				cbOnlyGooglePay.setEnabled(false);
+				cbGoogleTest.setEnabled(false);
+				cbFingerprint.setEnabled(true);
+			}
+		});
+
+		cbOnlyGooglePay.setOnCheckedChangeListener((buttonView, isChecked) -> {
+			cbFingerprint.setEnabled(!isChecked);
+			if (isChecked) {
+				cbFingerprint.setChecked(false);
+			}
+		});
+	}
 
 	@Override
 	public void onClick(final View v) {
-		switch (v.getId()) {
-			case R.id.btn_open_payment_screen:
-				if (id == null) {
-					Toast.makeText(this, "No saved card", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				if (etAmount.getText().toString().equals("")) {
-					Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
-					return;
-				}
+		if (v.getId() == R.id.btn_open_payment_screen) {
+			if (id == null&&!cbOnlyGooglePay.isChecked()) {
+				Toast.makeText(this, "No saved card", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			String uid = etUID.getText().toString();
+			if (TextUtils.isEmpty(uid)) uid = null;
+			PortmoneSDK.setUid(uid);
 
-				final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-				PortmoneSDK.setLanguage(languages[selectedLanguageId]);
+			final int selectedLanguageId = spLanguage.getSelectedItemPosition();
+			final int selectedType = spTypes.getSelectedItemPosition();
+			PortmoneSDK.setLanguage(languages[selectedLanguageId]);
 
-				PortmoneSDK.setFingerprintPaymentEnable(cbFingerprint.isChecked());
+			PortmoneSDK.setFingerprintPaymentEnable(cbFingerprint.isChecked());
 
-				final int selectedType = spTypes.getSelectedItemPosition();
-				AppStyle appStyle = PortmoneSDK.getAppStyle();
-				if (appStyle == null) {
-					appStyle = new AppStyle();
-				}
-				appStyle.setType(types[selectedType]);
-				PortmoneSDK.setAppStyle(appStyle);
+			AppStyle appStyle = PortmoneSDK.getAppStyle();
+			if (appStyle == null) {
+				appStyle = new AppStyle();
+			}
+			appStyle.setType(types[selectedType]);
+			PortmoneSDK.setAppStyle(appStyle);
 
-				final TokenPaymentParams bigParams = new TokenPaymentParams(
+			if (etAmount.getText().toString().equals("")) {
+				Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			if (etAmount.getText().toString().equals("")) {
+				Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			final TokenPaymentParams bigParams;
+			if (cbGPayEnabled.isChecked()) {
+				bigParams = new TokenPaymentParams(
+						etPayeeId.getText().toString(),
+						etBillNumber.getText().toString(),
+						cbPreauth.isChecked(),
+						currencies[spCurrency.getSelectedItemPosition()],
+						etAttribute1.getText().toString(),
+						etAttribute2.getText().toString(),
+						etAttribute3.getText().toString(),
+						etAttribute4.getText().toString(),
+						Double.parseDouble(etAmount.getText().toString()),
+						card,
+						token,
+						etDescription.getText().toString(),
+						cbOnlyGooglePay.isChecked(),
+						cbGoogleTest.isChecked()
+				);
+			} else {
+				bigParams = new TokenPaymentParams(
 						etPayeeId.getText().toString(),
 						etBillNumber.getText().toString(),
 						cbPreauth.isChecked(),
@@ -184,18 +243,12 @@ public class TokenActivity
 						token,
 						etDescription.getText().toString()
 				);
-
-				TokenPaymentActivity.performTransaction(
-						this,
-						114,
-						bigParams
-				);
-				break;
-			case R.id.btn_open_theme_screen:
-
-				startActivityForResult(new Intent(this, ThemeConfigureActivity.class), 112);
-				break;
-
+			}
+			TokenPaymentActivity.performTransaction(
+					this,
+					114,
+					bigParams
+			);
 		}
 	}
 
@@ -205,12 +258,10 @@ public class TokenActivity
 	) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+
 		if (requestCode == 114 && resultCode == RESULT_OK && data != null) {
 			final Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
 			tvResult.setText("Payment result:\n" + bill.toString());
-		}
-		if (requestCode == 112 && resultCode == RESULT_OK && data != null && data.hasExtra(ThemeConfigureActivity.APP_STYLE)) {
-			PortmoneSDK.setAppStyle((AppStyle) data.getSerializableExtra(ThemeConfigureActivity.APP_STYLE));
 		}
 	}
 }

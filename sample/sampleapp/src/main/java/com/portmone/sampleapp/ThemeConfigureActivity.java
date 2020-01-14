@@ -15,9 +15,13 @@ package com.portmone.sampleapp;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
+import com.portmone.ecomsdk.PortmoneSDK;
 import com.portmone.ecomsdk.data.style.AppStyle;
 import com.portmone.ecomsdk.data.style.BlockTitleTextStyle;
 import com.portmone.ecomsdk.data.style.ButtonStyle;
@@ -25,148 +29,287 @@ import com.portmone.ecomsdk.data.style.ButtonStyle;
 import com.portmone.ecomsdk.data.style.DialogStyle;
 import com.portmone.ecomsdk.data.style.EditTextStyle;
 import com.portmone.ecomsdk.data.style.TextStyle;
+import com.portmone.sampleapp.widget.ChooseColorView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ThemeConfigureActivity
 		extends AppCompatActivity
-		implements View.OnClickListener {
+		implements View.OnClickListener, ColorPickerDialogListener {
 	public static String APP_STYLE = "APP_STYLE";
-	EditText etBackground;
-	EditText etToolbar;
-	EditText etBackgroundSecondary;
-	EditText etBtnBackground;
-	EditText etBtnBackgroundPressed;
-	EditText etBtnText;
-	EditText etBtnTextPressed;
-	EditText etBtnCornerRadius;
-	EditText etFPBtnText;
-	EditText etInputText;
-	EditText etInputHint;
-	EditText etInputError;
-	EditText etBlockTitle;
-	EditText etTitle;
-	EditText etDescription;
-	EditText etAddInfo;
-	EditText etPaymentSuccessDownload;
-	EditText etDialogTitle;
-	EditText etDialogDescription;
-	EditText etDialogButton;
-	private AppStyle appStyle = new AppStyle();
+	private ChooseColorView ccvBackground;
+	private ChooseColorView ccvToolbar;
+	private ChooseColorView ccvBtnBackground;
+	private ChooseColorView ccvBtnBackgroundPressed;
+	private ChooseColorView ccvBtnText;
+	private ChooseColorView ccvBtnTextPressed;
+	private EditText etBtnCornerRadius;
+	private ChooseColorView ccvFPBtnText;
+	private ChooseColorView ccvPaymentDivider;
+	private ChooseColorView ccvInputText;
+	private ChooseColorView ccvInputHint;
+	private ChooseColorView ccvInputError;
+	private ChooseColorView ccvBlockTitle;
+	private ChooseColorView ccvBackgroundSecondary;
+	private ChooseColorView ccvTitle;
+	private ChooseColorView ccvDescription;
+	private ChooseColorView ccvAddInfo;
+	private ChooseColorView ccvPaymentSuccessDownload;
+	private ChooseColorView ccvDialogTitle;
+	private ChooseColorView ccvDialogDescription;
+	private ChooseColorView ccvDialogButton;
+
+	private ChooseColorView chooseColorView;
+
+	private AppStyle appStyle;
+	private ColorPickerDialog colorPicker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		appStyle = PortmoneSDK.getAppStyle();
+		if (appStyle == null) appStyle = new AppStyle();
+		else appStyle = new AppStyle(appStyle);
 		setContentView(R.layout.activity_theme_configure);
 
-		etBackground = findViewById(R.id.et_background);
-		etToolbar = findViewById(R.id.et_toolbar);
-		etBackgroundSecondary = findViewById(R.id.et_background_input);
-		etBtnBackground = findViewById(R.id.et_btn_back);
-		etBtnBackgroundPressed = findViewById(R.id.et_btn_back_pressed);
+		ccvBackground = findViewById(R.id.ccv_background);
+		ccvToolbar = findViewById(R.id.ccv_toolbar);
+
+		ccvBtnBackground = findViewById(R.id.ccv_btn_color);
+		ccvBtnBackgroundPressed = findViewById(R.id.ccv_btn_color_pressed);
+		ccvBtnText = findViewById(R.id.ccv_btn_text);
+		ccvBtnTextPressed = findViewById(R.id.ccv_btn_text_pressed);
 		etBtnCornerRadius = findViewById(R.id.et_btn_corner_radius);
-		etBtnText = findViewById(R.id.et_btn_text);
-		etBtnTextPressed = findViewById(R.id.et_btn_text_pressed);
-		etFPBtnText = findViewById(R.id.et_fp_btn_text);
-		etInputText = findViewById(R.id.et_input_txt);
-		etInputHint = findViewById(R.id.et_input_hint);
-		etInputError = findViewById(R.id.et_input_error);
-		etBlockTitle = findViewById(R.id.et_block_title_txt);
-		etTitle = findViewById(R.id.et_title_txt);
-		etDescription = findViewById(R.id.et_description_txt);
-		etAddInfo = findViewById(R.id.et_additional_info);
-		etPaymentSuccessDownload = findViewById(R.id.et_payment_success_download);
-		etDialogTitle = findViewById(R.id.et_dialog_title);
-		etDialogDescription = findViewById(R.id.et_dialog_description);
-		etDialogButton = findViewById(R.id.et_dialog_button);
+
+		ccvPaymentDivider = findViewById(R.id.ccv_payment_divider);
+		ccvFPBtnText = findViewById(R.id.ccv_fp_btn_text);
+		ccvInputText = findViewById(R.id.ccv_input_txt);
+		ccvInputHint = findViewById(R.id.ccv_input_hint);
+		ccvInputError = findViewById(R.id.ccv_input_error);
+		ccvBlockTitle = findViewById(R.id.ccv_block_title_txt);
+		ccvBackgroundSecondary = findViewById(R.id.ccv_background_input);
+		ccvTitle = findViewById(R.id.ccv_title_txt);
+		ccvDescription = findViewById(R.id.ccv_description_txt);
+		ccvAddInfo = findViewById(R.id.ccv_additional_info);
+		ccvPaymentSuccessDownload = findViewById(R.id.ccv_payment_success_download);
+		ccvDialogTitle = findViewById(R.id.ccv_dialog_title);
+		ccvDialogDescription = findViewById(R.id.ccv_dialog_description);
+		ccvDialogButton = findViewById(R.id.ccv_dialog_button);
+
+		ccvBackground.setOnClickListener(this);
+		ccvToolbar.setOnClickListener(this);
+		ccvBtnBackground.setOnClickListener(this);
+		ccvBtnBackgroundPressed.setOnClickListener(this);
+		ccvBtnText.setOnClickListener(this);
+		ccvBtnTextPressed.setOnClickListener(this);
+		ccvPaymentDivider.setOnClickListener(this);
+		ccvFPBtnText.setOnClickListener(this);
+		ccvInputText.setOnClickListener(this);
+		ccvInputHint.setOnClickListener(this);
+		ccvInputError.setOnClickListener(this);
+		ccvBlockTitle.setOnClickListener(this);
+		ccvBackgroundSecondary.setOnClickListener(this);
+		ccvTitle.setOnClickListener(this);
+		ccvDescription.setOnClickListener(this);
+		ccvAddInfo.setOnClickListener(this);
+		ccvPaymentSuccessDownload.setOnClickListener(this);
+		ccvDialogTitle.setOnClickListener(this);
+		ccvDialogDescription.setOnClickListener(this);
+		ccvDialogButton.setOnClickListener(this);
+
+		configureUIForStyle(appStyle);
+	}
+
+	private void configureUIForStyle(AppStyle appStyle) {
+		ccvBackground.setColor(appStyle.getBackground());
+		ccvToolbar.setColor(appStyle.getToolbarColor());
+
+		ButtonStyle buttonStyle = appStyle.getButtonStyle();
+		if (buttonStyle == null) buttonStyle = new ButtonStyle();
+		ccvBtnBackground.setColor(buttonStyle.getBackgroundColor());
+		ccvBtnBackgroundPressed.setColor(buttonStyle.getBackgroundColorPressed());
+		ccvBtnText.setColor(buttonStyle.getTextColor());
+		ccvBtnTextPressed.setColor(buttonStyle.getTextColorPressed());
+		etBtnCornerRadius.setText(buttonStyle.getCornerRadius() == -1 ? null : Float.toString(px2Dp(buttonStyle.getCornerRadius())));
+
+		setTextColor(ccvPaymentDivider, appStyle.getPaymentDivider());
+
+		TextStyle fingerprintButtonStyle = appStyle.getFingerprintButton();
+		if (fingerprintButtonStyle == null) fingerprintButtonStyle = new TextStyle();
+		ccvFPBtnText.setColor(fingerprintButtonStyle.getTextColor());
+
+		EditTextStyle editTextStyle = appStyle.getEditTextStyle();
+		if (editTextStyle == null) editTextStyle = new EditTextStyle();
+		ccvInputText.setColor(editTextStyle.getTextColor());
+		ccvInputHint.setColor(editTextStyle.getHintTextColor());
+		ccvInputError.setColor(editTextStyle.getErrorTextColor());
+
+		BlockTitleTextStyle blockStyle = appStyle.getBlockTitleTextStyle();
+		if (blockStyle == null) blockStyle = new BlockTitleTextStyle();
+		ccvBlockTitle.setColor(blockStyle.getTextColor());
+		ccvBackgroundSecondary.setColor(blockStyle.getBackgroundColor());
+
+		setTextColor(ccvTitle, appStyle.getTitleTextStyle());
+		setTextColor(ccvDescription, appStyle.getDescriptionTextStyle());
+		setTextColor(ccvAddInfo, appStyle.getAdditionalInfoTextStyle());
+		setTextColor(ccvPaymentSuccessDownload, appStyle.getPaymentSuccessDownload());
+
+		DialogStyle dialogStyle = appStyle.getDialogStyle();
+		if (dialogStyle == null) dialogStyle = new DialogStyle();
+
+		setTextColor(ccvDialogTitle, dialogStyle.getTitle());
+		setTextColor(ccvDialogDescription, dialogStyle.getDescription());
+		setTextColor(ccvDialogButton, dialogStyle.getButton());
+	}
+
+	private void setTextColor(ChooseColorView ccv, TextStyle style) {
+		if (style == null) style = new TextStyle();
+		ccv.setColor(style.getTextColor());
 	}
 
 	@Override
 	public void onClick(final View v) {
-		if (v.getId() == R.id.btn_submit) {
-			appStyle.setBackground(getColor(etBackground));
-			appStyle.setToolbarColor(getColor(etToolbar));
-			fillEditTextStyle();
-			fillButtonStyle();
-			fillTextBlockStyle();
-			fillTextTitleStyle();
-			fillTextStyle();
-			fillFPButtonStyle();
-			fillAddInfoTextStyle();
-			fillPaymentSuccessDownload();
-			fillDialogTextStyle();
+		switch (v.getId()) {
+			case R.id.btn_clear:
+				appStyle = new AppStyle();
+				configureUIForStyle(appStyle);
+				break;
+			case R.id.btn_submit:
+				appStyle.setBackground(ccvBackground.getColor());
+				appStyle.setToolbarColor(ccvToolbar.getColor());
+				fillEditTextStyle();
+				fillButtonStyle();
+				fillTextBlockStyle();
+				fillTextTitleStyle();
+				fillPaymentDividerTextStyle();
+				fillTextStyle();
+				fillFPButtonStyle();
+				fillAddInfoTextStyle();
+				fillPaymentSuccessDownload();
+				fillDialogTextStyle();
 
-			Intent intent = new Intent();
-			intent.putExtra(APP_STYLE, appStyle);
-			setResult(RESULT_OK, intent);
-			finish();
+				PortmoneSDK.setAppStyle(appStyle);
+
+				setResult(RESULT_OK);
+				finish();
+				break;
+			case R.id.ccv_background:
+			case R.id.ccv_toolbar:
+			case R.id.ccv_background_input:
+			case R.id.ccv_btn_color:
+			case R.id.ccv_btn_color_pressed:
+			case R.id.ccv_btn_text:
+			case R.id.ccv_btn_text_pressed:
+			case R.id.ccv_payment_divider:
+			case R.id.ccv_fp_btn_text:
+			case R.id.ccv_input_txt:
+			case R.id.ccv_input_hint:
+			case R.id.ccv_input_error:
+			case R.id.ccv_block_title_txt:
+			case R.id.ccv_title_txt:
+			case R.id.ccv_description_txt:
+			case R.id.ccv_additional_info:
+			case R.id.ccv_payment_success_download:
+			case R.id.ccv_dialog_title:
+			case R.id.ccv_dialog_description:
+			case R.id.ccv_dialog_button:
+				chooseColorView = (ChooseColorView) v;
+				if (colorPicker != null) {
+					colorPicker.dismissAllowingStateLoss();
+				}
+				colorPicker = ColorPickerDialog.newBuilder()
+						.setAllowPresets(true)
+						.setDialogType(ColorPickerDialog.TYPE_PRESETS)
+						.setColor(chooseColorView.getColor())
+						.setShowAlphaSlider(true)
+						.setShowColorShades(true)
+						.create();
+				colorPicker.setColorPickerDialogListener(this);
+				colorPicker.show(getSupportFragmentManager(), ColorPickerDialog.class.getSimpleName());
+				break;
+		}
+	}
+
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		if (colorPicker != null) {
+			colorPicker.dismissAllowingStateLoss();
 		}
 	}
 
 	private void fillFPButtonStyle() {
 		TextStyle txtStyle = new TextStyle();
-		txtStyle.setTextColor(getColor(etFPBtnText));
+		txtStyle.setTextColor(ccvFPBtnText.getColor());
 
 		appStyle.setFingerprintButton(txtStyle);
 	}
 
-	private int getColor(EditText et) {
-		try {
-			return Color.parseColor(et.getText().toString());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
 	private void fillEditTextStyle() {
 		EditTextStyle editTextStyle = new EditTextStyle();
-		editTextStyle.setTextColor(getColor(etInputText));
-		editTextStyle.setHintTextColor(getColor(etInputHint));
-		editTextStyle.setErrorTextColor(getColor(etInputError));
+		editTextStyle.setTextColor(ccvInputText.getColor());
+		editTextStyle.setHintTextColor(ccvInputHint.getColor());
+		editTextStyle.setErrorTextColor(ccvInputError.getColor());
 
 		appStyle.setEditTextStyle(editTextStyle);
 	}
 
 	private void fillButtonStyle() {
 		ButtonStyle btnStyle = new ButtonStyle();
-		btnStyle.setTextColor(getColor(etBtnText));
-		btnStyle.setTextColorPressed(getColor(etBtnTextPressed));
-		btnStyle.setBackgroundColor(getColor(etBtnBackground));
-		btnStyle.setBackgroundColorPressed(getColor(etBtnBackgroundPressed));
+		btnStyle.setTextColor(ccvBtnText.getColor());
+		btnStyle.setTextColorPressed(ccvBtnTextPressed.getColor());
+		btnStyle.setBackgroundColor(ccvBtnBackground.getColor());
+		btnStyle.setBackgroundColorPressed(ccvBtnBackgroundPressed.getColor());
 		try {
-			btnStyle.setCornerRadius(Float.parseFloat(etBtnCornerRadius.getText().toString()));
+			btnStyle.setCornerRadius(dp2Px(Float.parseFloat(etBtnCornerRadius.getText().toString())));
 		} catch (Exception ignore) {
 		}
+
 		appStyle.setButtonStyle(btnStyle);
+	}
+
+	public  float dp2Px(float dp) {
+		return dp * ((float) getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+	}
+
+	public float px2Dp(float px) {
+		return px / ((float) getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
 	}
 
 	private void fillTextBlockStyle() {
 		BlockTitleTextStyle txtStyle = new BlockTitleTextStyle();
-		txtStyle.setTextColor(getColor(etBlockTitle));
-		txtStyle.setBackgroundColor(getColor(etBackgroundSecondary));
+		txtStyle.setTextColor(ccvBlockTitle.getColor());
+		txtStyle.setBackgroundColor(ccvBackgroundSecondary.getColor());
 
 		appStyle.setBlockTitleTextStyle(txtStyle);
 	}
 
 	private void fillTextTitleStyle() {
 		TextStyle txtStyle = new TextStyle();
-		txtStyle.setTextColor(getColor(etTitle));
+		txtStyle.setTextColor(ccvTitle.getColor());
 
 		appStyle.setTitleTextStyle(txtStyle);
 	}
 
+	private void fillPaymentDividerTextStyle() {
+		TextStyle txtStyle = new TextStyle();
+		txtStyle.setTextColor(ccvPaymentDivider.getColor());
+
+		appStyle.setPaymentDivider(txtStyle);
+	}
+
 	private void fillAddInfoTextStyle() {
 		TextStyle txtStyle = new TextStyle();
-		txtStyle.setTextColor(getColor(etAddInfo));
+		txtStyle.setTextColor(ccvAddInfo.getColor());
 
 		appStyle.setAdditionalInfoTextStyle(txtStyle);
 	}
 
 	private void fillPaymentSuccessDownload() {
 		TextStyle txtStyle = new TextStyle();
-		txtStyle.setTextColor(getColor(etPaymentSuccessDownload));
+		txtStyle.setTextColor(ccvPaymentSuccessDownload.getColor());
 
 		appStyle.setPaymentSuccessDownload(txtStyle);
 	}
@@ -175,13 +318,13 @@ public class ThemeConfigureActivity
 		DialogStyle dialogStyle = new DialogStyle();
 
 		TextStyle txtTitle = new TextStyle();
-		txtTitle.setTextColor(getColor(etDialogTitle));
+		txtTitle.setTextColor(ccvDialogTitle.getColor());
 
 		TextStyle txtDescription = new TextStyle();
-		txtDescription.setTextColor(getColor(etDialogDescription));
+		txtDescription.setTextColor(ccvDialogDescription.getColor());
 
 		TextStyle txtButton = new TextStyle();
-		txtButton.setTextColor(getColor(etDialogButton));
+		txtButton.setTextColor(ccvDialogButton.getColor());
 
 		dialogStyle.setTitle(txtTitle);
 		dialogStyle.setDescription(txtDescription);
@@ -192,8 +335,20 @@ public class ThemeConfigureActivity
 
 	private void fillTextStyle() {
 		TextStyle txtStyle = new TextStyle();
-		txtStyle.setTextColor(getColor(etDescription));
+		txtStyle.setTextColor(ccvDescription.getColor());
 
 		appStyle.setDescriptionTextStyle(txtStyle);
+	}
+
+	@Override
+	public void onColorSelected(int dialogId, int color) {
+		if (chooseColorView != null) {
+			chooseColorView.setColor(color);
+		}
+	}
+
+	@Override
+	public void onDialogDismissed(int dialogId) {
+
 	}
 }
