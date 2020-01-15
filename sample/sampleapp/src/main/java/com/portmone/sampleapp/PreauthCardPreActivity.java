@@ -132,10 +132,25 @@ public class PreauthCardPreActivity
 			final int requestCode, final int resultCode, @Nullable final Intent data
 	) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 113 && resultCode == RESULT_OK && data != null) {
-			final Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-			saveCard(bill);
-			tvResult.setText("Payment result:\n" + bill.toString());
+
+		if (requestCode == 113) {
+			if (resultCode == RESULT_OK && data != null) {
+				Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
+				tvResult.setText("Payment result:\n" + bill.toString());
+
+				boolean paidThroughGooglePay = data.getBooleanExtra(Constant$ExtraKey.PAID_WITH_GOOGLE_PAY, false);
+				if (!paidThroughGooglePay) {
+					saveCard(bill);
+				}
+			} else if (resultCode == RESULT_CANCELED) {
+				if (data != null && data.hasExtra(Constant$ExtraKey.ERROR_CODE)) {
+					int errorCode = data.getIntExtra(Constant$ExtraKey.ERROR_CODE, -1);
+					String errorMessage = data.getStringExtra(Constant$ExtraKey.ERROR_MESSAGE);
+					Log.d("PaymentActivity", "error code: " + errorCode + ", errorMessage: " + errorMessage);
+				} else {
+					//користувач вийшов з sdk без проходження всього flow
+				}
+			}
 		}
 	}
 
