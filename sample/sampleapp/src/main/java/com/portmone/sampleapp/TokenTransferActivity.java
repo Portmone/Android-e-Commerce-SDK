@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class TokenTransferActivity
 	private EditText etAttribute3;
 	private EditText etAttribute4;
 	private EditText etAmount;
+	private CheckBox cbReceipt;
 	private TextView tvResult;
 
 	@Constant$Language
@@ -68,6 +70,7 @@ public class TokenTransferActivity
 		etAttribute2 = findViewById(R.id.et_attribute_2);
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
+		cbReceipt = findViewById(R.id.cb_receipt);
 		etAmount = findViewById(R.id.et_amount);
 		spLanguage = findViewById(R.id.sp_language);
 
@@ -117,7 +120,8 @@ public class TokenTransferActivity
 				com.portmone.ecomsdk.ui.token.transfer.TokenTransferActivity.performTransaction(
 						this,
 						114,
-						bigParams
+						bigParams,
+						cbReceipt.isChecked()
 				);
 				break;
 		}

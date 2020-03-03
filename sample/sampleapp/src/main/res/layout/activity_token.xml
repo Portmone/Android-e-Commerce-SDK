@@ -157,6 +157,15 @@
 			</com.google.android.material.textfield.TextInputLayout>
 
 			<CheckBox
+				android:id="@+id/cb_receipt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="start"
+				android:layout_marginTop="8dp"
+				android:checked="true"
+				android:text="Show receipt screen" />
+
+			<CheckBox
 				android:id="@+id/cb_preauth"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -184,8 +193,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="start"
-				android:enabled="false"
 				android:layout_marginTop="8dp"
+				android:enabled="false"
 				android:text="GPay test environment" />
 
 			<CheckBox
@@ -193,8 +202,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="start"
-				android:enabled="false"
 				android:layout_marginTop="8dp"
+				android:enabled="false"
 				android:text="Only GPay" />
 
 			<LinearLayout

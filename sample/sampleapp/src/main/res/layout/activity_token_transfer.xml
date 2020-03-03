@@ -148,6 +148,14 @@
 					android:layout_height="wrap_content" />
 			</LinearLayout>
 
+			<CheckBox
+				android:id="@+id/cb_receipt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="start"
+				android:layout_marginTop="8dp"
+				android:checked="true"
+				android:text="Show receipt screen" />
 
 			<Button
 				android:id="@+id/btn_open_payment_screen"

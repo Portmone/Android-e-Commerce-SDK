@@ -68,6 +68,7 @@ public class CardActivity
 	private EditText etAttribute3;
 	private EditText etAttribute4;
 	private EditText etAmount;
+	private CheckBox cbReceipt;
 	private CheckBox cbGPayEnabled;
 	private CheckBox cbOnlyGooglePay;
 	private CheckBox cbGoogleTest;
@@ -109,6 +110,7 @@ public class CardActivity
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
 		etAmount = findViewById(R.id.et_amount);
+		cbReceipt = findViewById(R.id.cb_receipt);
 		cbGPayEnabled = findViewById(R.id.cb_google_pay);
 		cbOnlyGooglePay = findViewById(R.id.cb_only_google_pay);
 		cbGoogleTest = findViewById(R.id.cb_test_google_pay);
@@ -205,7 +207,8 @@ public class CardActivity
 			CardPaymentActivity.performTransaction(
 					this,
 					111,
-					bigParams
+					bigParams,
+					cbReceipt.isChecked()
 			);
 		}
 	}
