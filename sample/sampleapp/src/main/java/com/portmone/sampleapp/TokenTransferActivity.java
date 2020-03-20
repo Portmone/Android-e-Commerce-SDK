@@ -74,7 +74,6 @@ public class TokenTransferActivity
 		etAmount = findViewById(R.id.et_amount);
 		spLanguage = findViewById(R.id.sp_language);
 
-
 		ArrayAdapter<String> languages = new ArrayAdapter<>(this, R.layout.layout_spinner, R.id.txt_spinner);
 		languages.add("System");
 		languages.add(this.languages[1]);

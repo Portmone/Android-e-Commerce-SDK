@@ -55,7 +55,6 @@ import static com.portmone.ecomsdk.util.Constant$Language.UK;
 public class CardActivity
 		extends AppCompatActivity
 		implements View.OnClickListener {
-
 	private Spinner spCurrency;
 	private Spinner spLanguage;
 	private Spinner spTypes;
@@ -89,13 +88,16 @@ public class CardActivity
 	@Constant$Type
 	private int[] types = new int[] {
 			Constant$Type.DEFAULT,
-			Constant$Type.PHONE
+			Constant$Type.PHONE,
+			Constant$Type.ACCOUNT
 	};
 
 	private String[] typesTxt = new String[] {
 			"DEFAULT",
-			"PHONE"
+			"PHONE",
+			"ACCOUNT"
 	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -157,7 +159,6 @@ public class CardActivity
 	public void onClick(final View v) {
 		if (v.getId() == R.id.btn_open_payment_screen) {
 			final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-			final int selectedType = spTypes.getSelectedItemPosition();
 
 			PortmoneSDK.setLanguage(languages[selectedLanguageId]);
 
@@ -169,7 +170,7 @@ public class CardActivity
 			if (appStyle == null) {
 				appStyle = new AppStyle();
 			}
-			appStyle.setType(types[selectedType]);
+			appStyle.setType(types[spTypes.getSelectedItemPosition()]);
 			PortmoneSDK.setAppStyle(appStyle);
 
 			if (etAmount.getText().toString().equals("")) {

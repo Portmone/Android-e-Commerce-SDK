@@ -67,6 +67,7 @@ public class TokenActivity
 	private EditText etAttribute3;
 	private EditText etAttribute4;
 	private EditText etAmount;
+	private EditText etAmountWithoutCvv;
 	private EditText etBillNumber;
 	private CheckBox cbReceipt;
 	private CheckBox cbGPayEnabled;
@@ -89,12 +90,14 @@ public class TokenActivity
 	@Constant$Type
 	private int[] types = new int[] {
 			Constant$Type.DEFAULT,
-			Constant$Type.PHONE
+			Constant$Type.PHONE,
+			Constant$Type.ACCOUNT
 	};
 
 	private String[] typesTxt = new String[] {
 			"DEFAULT",
-			"PHONE"
+			"PHONE",
+			"ACCOUNT"
 	};
 
 	private String card;
@@ -121,6 +124,7 @@ public class TokenActivity
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
 		etAmount = findViewById(R.id.et_amount);
+		etAmountWithoutCvv = findViewById(R.id.et_amount_without_cvv);
 		cbReceipt = findViewById(R.id.cb_receipt);
 		cbGPayEnabled = findViewById(R.id.cb_google_pay);
 		cbOnlyGooglePay = findViewById(R.id.cb_only_google_pay);
@@ -191,7 +195,6 @@ public class TokenActivity
 			PortmoneSDK.setUid(uid);
 
 			final int selectedLanguageId = spLanguage.getSelectedItemPosition();
-			final int selectedType = spTypes.getSelectedItemPosition();
 			PortmoneSDK.setLanguage(languages[selectedLanguageId]);
 
 			PortmoneSDK.setFingerprintPaymentEnable(cbFingerprint.isChecked());
@@ -200,7 +203,7 @@ public class TokenActivity
 			if (appStyle == null) {
 				appStyle = new AppStyle();
 			}
-			appStyle.setType(types[selectedType]);
+			appStyle.setType(types[spTypes.getSelectedItemPosition()]);
 			PortmoneSDK.setAppStyle(appStyle);
 
 			if (etAmount.getText().toString().equals("")) {
@@ -212,7 +215,11 @@ public class TokenActivity
 				Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
 				return;
 			}
-
+			if (TextUtils.isEmpty(etAmountWithoutCvv.getText())) {
+				PortmoneSDK.setBillAmountWithoutCvvConfirmation(0);
+			} else {
+				PortmoneSDK.setBillAmountWithoutCvvConfirmation(Double.parseDouble(etAmountWithoutCvv.getText().toString()));
+			}
 			final TokenPaymentParams bigParams;
 			if (cbGPayEnabled.isChecked()) {
 				bigParams = new TokenPaymentParams(
