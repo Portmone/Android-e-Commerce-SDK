@@ -66,8 +66,10 @@ public class CardActivity
 	private EditText etAttribute2;
 	private EditText etAttribute3;
 	private EditText etAttribute4;
+	private EditText etAttribute5;
 	private EditText etAmount;
 	private CheckBox cbReceipt;
+	private CheckBox cbDisableReturnToDetails;
 	private CheckBox cbGPayEnabled;
 	private CheckBox cbOnlyGooglePay;
 	private CheckBox cbGoogleTest;
@@ -111,8 +113,10 @@ public class CardActivity
 		etAttribute2 = findViewById(R.id.et_attribute_2);
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
+		etAttribute5 = findViewById(R.id.et_attribute_5);
 		etAmount = findViewById(R.id.et_amount);
 		cbReceipt = findViewById(R.id.cb_receipt);
+		cbDisableReturnToDetails = findViewById(R.id.cb_return_to_details);
 		cbGPayEnabled = findViewById(R.id.cb_google_pay);
 		cbOnlyGooglePay = findViewById(R.id.cb_only_google_pay);
 		cbGoogleTest = findViewById(R.id.cb_test_google_pay);
@@ -188,6 +192,7 @@ public class CardActivity
 						etAttribute2.getText().toString(),
 						etAttribute3.getText().toString(),
 						etAttribute4.getText().toString(),
+						etAttribute5.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
 						etDescription.getText().toString(),
 						cbOnlyGooglePay.isChecked(),
@@ -202,6 +207,7 @@ public class CardActivity
 						etAttribute2.getText().toString(),
 						etAttribute3.getText().toString(),
 						etAttribute4.getText().toString(),
+						etAttribute5.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
 						etDescription.getText().toString());
 			}
@@ -209,7 +215,8 @@ public class CardActivity
 					this,
 					111,
 					bigParams,
-					cbReceipt.isChecked()
+					cbReceipt.isChecked(),
+					!cbDisableReturnToDetails.isChecked()
 			);
 		}
 	}

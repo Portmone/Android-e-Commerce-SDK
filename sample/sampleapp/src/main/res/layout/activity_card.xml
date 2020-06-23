@@ -142,6 +142,18 @@
 				android:layout_height="wrap_content">
 
 				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_attribute_5"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="Attribute 5" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
 					android:id="@+id/et_amount"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -159,6 +171,14 @@
 				android:layout_marginTop="8dp"
 				android:checked="true"
 				android:text="Show receipt screen" />
+
+			<CheckBox
+				android:id="@+id/cb_return_to_details"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="start"
+				android:layout_marginTop="8dp"
+				android:text="Disable return to details after error" />
 
 			<CheckBox
 				android:id="@+id/cb_preauth"

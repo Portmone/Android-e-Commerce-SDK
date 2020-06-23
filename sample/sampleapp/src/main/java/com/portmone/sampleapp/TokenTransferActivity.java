@@ -43,6 +43,7 @@ public class TokenTransferActivity
 	private EditText etAttribute4;
 	private EditText etAmount;
 	private CheckBox cbReceipt;
+	private CheckBox cbDisableReturnToDetails;
 	private TextView tvResult;
 
 	@Constant$Language
@@ -71,6 +72,7 @@ public class TokenTransferActivity
 		etAttribute3 = findViewById(R.id.et_attribute_3);
 		etAttribute4 = findViewById(R.id.et_attribute_4);
 		cbReceipt = findViewById(R.id.cb_receipt);
+		cbDisableReturnToDetails = findViewById(R.id.cb_return_to_details);
 		etAmount = findViewById(R.id.et_amount);
 		spLanguage = findViewById(R.id.sp_language);
 
@@ -120,7 +122,8 @@ public class TokenTransferActivity
 						this,
 						114,
 						bigParams,
-						cbReceipt.isChecked()
+						cbReceipt.isChecked(),
+						!cbDisableReturnToDetails.isChecked()
 				);
 				break;
 		}

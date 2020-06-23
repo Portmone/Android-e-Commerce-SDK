@@ -64,8 +64,8 @@
 
 			<com.google.android.material.textfield.TextInputLayout
 				android:layout_width="match_parent"
-				android:visibility="gone"
-				android:layout_height="wrap_content">
+				android:layout_height="wrap_content"
+				android:visibility="gone">
 
 				<com.google.android.material.textfield.TextInputEditText
 
@@ -156,6 +156,14 @@
 				android:layout_marginTop="8dp"
 				android:checked="true"
 				android:text="Show receipt screen" />
+
+			<CheckBox
+				android:id="@+id/cb_return_to_details"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="start"
+				android:layout_marginTop="8dp"
+				android:text="Disable return to details after error" />
 
 			<Button
 				android:id="@+id/btn_open_payment_screen"
