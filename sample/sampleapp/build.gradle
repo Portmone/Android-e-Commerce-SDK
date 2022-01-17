@@ -4,11 +4,11 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
     }
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.portmone2.android"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -34,7 +34,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.3.0"
     implementation "com.google.android.material:material:1.3.0"
 
-    implementation ("com.portmone.ecomsdk:ecomsdk:2.0.0-beta01") {
+    implementation ("com.portmone.ecomsdk:ecomsdk:2.0.0-beta02") {
 //         exclude group: 'io.card'
     }
     implementation 'com.jaredrummler:colorpicker:1.1.0'
