@@ -195,6 +195,7 @@ public class CardActivity
 						etAttribute5.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
 						etDescription.getText().toString(),
+						"",
 						cbOnlyGooglePay.isChecked(),
 						cbGoogleTest.isChecked()
 				);
@@ -209,7 +210,8 @@ public class CardActivity
 						etAttribute4.getText().toString(),
 						etAttribute5.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
-						etDescription.getText().toString());
+						etDescription.getText().toString(),
+						"");
 			}
 			CardPaymentActivity.performTransaction(
 					this,
