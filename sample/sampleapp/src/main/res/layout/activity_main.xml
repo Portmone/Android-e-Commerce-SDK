@@ -7,6 +7,12 @@
 	android:orientation="vertical"
 	tools:context=".MainActivity">
 
+	<TextView android:id="@+id/tv_version"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="18sp"
+		android:textColor="@color/purple_500"/>
+
 	<Button
 		android:id="@+id/card"
 		android:layout_width="wrap_content"
@@ -36,9 +42,22 @@
 		android:text="Token transfer" />
 
 	<Button
+		android:id="@+id/preauth_pay_bills"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:onClick="onClick"
+		android:text="Save Token for mass payment" />
+
+	<Button
+		android:id="@+id/pay_bills"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:onClick="onClick"
+		android:text="Mass payment" />
+
+	<Button
 		android:id="@+id/btn_open_theme_screen"
 		android:layout_width="wrap_content"
-		android:layout_marginTop="40dp"
 		android:layout_height="wrap_content"
 		android:onClick="onClick"
 		android:text="Theme configurations" />

@@ -1,23 +1,9 @@
-//  Created on 2/18/19.
-//  Copyright © 2019 Portmone. All rights reserved.
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
 package com.portmone.sampleapp;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -26,18 +12,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.portmone.ecomsdk.PortmoneSDK;
-import com.portmone.ecomsdk.data.Bill;
 import com.portmone.ecomsdk.data.TokenPaymentParams;
+import com.portmone.ecomsdk.data.contract_params.TokenPaymentContractParams;
 import com.portmone.ecomsdk.data.style.AppStyle;
-import com.portmone.ecomsdk.ui.token.payment.TokenPaymentActivity;
+import com.portmone.ecomsdk.ui.token.payment.TokenPaymentContract;
 import com.portmone.ecomsdk.util.Constant$BillCurrency;
-import com.portmone.ecomsdk.util.Constant$ExtraKey;
 import com.portmone.ecomsdk.util.Constant$Language;
 import com.portmone.ecomsdk.util.Constant$Type;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.BYN;
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.EUR;
@@ -105,6 +90,23 @@ public class TokenActivity
 	private String card;
 	private String token;
 	private String id;
+
+	private ActivityResultLauncher<TokenPaymentContractParams> resultLauncher = registerForActivityResult(
+			new TokenPaymentContract(),
+			result -> {
+				result.handleResult(
+						(successResult) -> {
+							tvResult.setText("Payment result:\n" + successResult.getBill().toString());
+						},
+						(failureResult) -> {
+							tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
+									"\n" + failureResult.getMessage());
+						},
+						() -> {
+							tvResult.setText("Payment has been cancelled");
+						});
+			}
+	);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -260,35 +262,12 @@ public class TokenActivity
 						etDescription.getText().toString()
 				);
 			}
-			TokenPaymentActivity.performTransaction(
-					this,
-					114,
+
+			resultLauncher.launch(new TokenPaymentContractParams(
 					bigParams,
 					cbReceipt.isChecked(),
 					!cbDisableReturnToDetails.isChecked()
-			);
-		}
-	}
-
-	@Override
-	protected void onActivityResult(
-			final int requestCode, final int resultCode, @Nullable final Intent data
-	) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == 114) {
-			if (resultCode == RESULT_OK && data != null) {
-				Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-				tvResult.setText("Payment result:\n" + bill.toString());
-			} else if (resultCode == RESULT_CANCELED) {
-				if (data != null && data.hasExtra(Constant$ExtraKey.ERROR_CODE)) {
-					int errorCode = data.getIntExtra(Constant$ExtraKey.ERROR_CODE, -1);
-					String errorMessage = data.getStringExtra(Constant$ExtraKey.ERROR_MESSAGE);
-					Log.d("PaymentActivity", "error code: " + errorCode + ", errorMessage: " + errorMessage);
-				} else {
-					//користувач вийшов з sdk без проходження всього flow оплати
-				}
-			}
+			));
 		}
 	}
 }

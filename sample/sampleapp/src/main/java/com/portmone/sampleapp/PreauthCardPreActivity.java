@@ -1,42 +1,5 @@
-//  Created on 2/18/19.
-//  Copyright © 2019 Portmone. All rights reserved.
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
 package com.portmone.sampleapp;
 
-
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.portmone.ecomsdk.PortmoneSDK;
-import com.portmone.ecomsdk.data.Bill;
-import com.portmone.ecomsdk.data.SaveCardParams;
-import com.portmone.ecomsdk.data.style.AppStyle;
-import com.portmone.ecomsdk.ui.savecard.PreauthCardActivity;
-import com.portmone.ecomsdk.util.Constant$BillCurrency;
-import com.portmone.ecomsdk.util.Constant$ExtraKey;
-import com.portmone.ecomsdk.util.Constant$Language;
-
-import java.util.Calendar;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.BYN;
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.EUR;
@@ -50,6 +13,27 @@ import static com.portmone.ecomsdk.util.Constant$Language.RU;
 import static com.portmone.ecomsdk.util.Constant$Language.SYSTEM;
 import static com.portmone.ecomsdk.util.Constant$Language.UK;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.portmone.ecomsdk.PortmoneSDK;
+import com.portmone.ecomsdk.data.Bill;
+import com.portmone.ecomsdk.data.SaveCardParams;
+import com.portmone.ecomsdk.ui.savecard.PreauthCardContract;
+import com.portmone.ecomsdk.util.Constant$BillCurrency;
+import com.portmone.ecomsdk.util.Constant$Language;
+
+import java.util.Calendar;
+
 public class PreauthCardPreActivity
 		extends AppCompatActivity
 		implements View.OnClickListener {
@@ -58,6 +42,7 @@ public class PreauthCardPreActivity
 	private EditText etUID;
 	private EditText etPayeeId;
 	private EditText etDescription;
+	private EditText etEmailAddress;
 	private TextView tvResult;
 
 	@Constant$BillCurrency
@@ -70,6 +55,24 @@ public class PreauthCardPreActivity
 			SYSTEM, UK, EN, RU
 	};
 
+	private ActivityResultLauncher<SaveCardParams> resultLauncher = registerForActivityResult(
+			new PreauthCardContract(),
+			result -> {
+				result.handleResult(
+						(successResult) -> {
+							tvResult.setText("Payment result:\n" + successResult.getBill().toString());
+							saveCard(successResult.getBill());
+						},
+						(failureResult) -> {
+							tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
+									"\n" + failureResult.getMessage());
+						},
+						() -> {
+							tvResult.setText("Payment has been cancelled");
+						});
+			}
+	);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +82,7 @@ public class PreauthCardPreActivity
 		etPayeeId = findViewById(R.id.et_payee_id);
 
 		etDescription = findViewById(R.id.et_description);
+		etEmailAddress = findViewById(R.id.et_email);
 
 		spLanguage = findViewById(R.id.sp_language);
 
@@ -111,14 +115,10 @@ public class PreauthCardPreActivity
 					etPayeeId.getText().toString(),
 					etDescription.getText().toString(),
 					generateNumber(),
-					""
+					etEmailAddress.getText().toString()
 			);
 
-			PreauthCardActivity.performTransaction(
-					this,
-					113,
-					bigParams
-			);
+			resultLauncher.launch(bigParams);
 		}
 	}
 
@@ -126,33 +126,6 @@ public class PreauthCardPreActivity
 		// test bil number generation replace with real one
 
 		return "Test" + Calendar.getInstance().getTime().hashCode();
-	}
-
-	@Override
-	protected void onActivityResult(
-			final int requestCode, final int resultCode, @Nullable final Intent data
-	) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == 113) {
-			if (resultCode == RESULT_OK && data != null) {
-				Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-				tvResult.setText("Payment result:\n" + bill.toString());
-
-				boolean paidThroughGooglePay = data.getBooleanExtra(Constant$ExtraKey.PAID_WITH_GOOGLE_PAY, false);
-				if (!paidThroughGooglePay) {
-					saveCard(bill);
-				}
-			} else if (resultCode == RESULT_CANCELED) {
-				if (data != null && data.hasExtra(Constant$ExtraKey.ERROR_CODE)) {
-					int errorCode = data.getIntExtra(Constant$ExtraKey.ERROR_CODE, -1);
-					String errorMessage = data.getStringExtra(Constant$ExtraKey.ERROR_MESSAGE);
-					Log.d("PaymentActivity", "error code: " + errorCode + ", errorMessage: " + errorMessage);
-				} else {
-					//користувач вийшов з sdk без проходження всього flow
-				}
-			}
-		}
 	}
 
 	private void saveCard(Bill shopBill) {

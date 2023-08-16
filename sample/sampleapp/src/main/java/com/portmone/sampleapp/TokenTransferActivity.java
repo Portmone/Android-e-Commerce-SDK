@@ -1,11 +1,9 @@
 package com.portmone.sampleapp;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -14,14 +12,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.portmone.ecomsdk.PortmoneSDK;
-import com.portmone.ecomsdk.data.Bill;
 import com.portmone.ecomsdk.data.TokenTransferParams;
-import com.portmone.ecomsdk.data.style.AppStyle;
-import com.portmone.ecomsdk.util.Constant$ExtraKey;
+import com.portmone.ecomsdk.data.contract_params.TokenTransferContractParams;
+import com.portmone.ecomsdk.ui.token.transfer.TokenTransferContract;
 import com.portmone.ecomsdk.util.Constant$Language;
 
 import static com.portmone.ecomsdk.util.Constant$Language.EN;
@@ -53,6 +50,23 @@ public class TokenTransferActivity
 	private String card;
 	private String token;
 	private String id;
+
+	private ActivityResultLauncher<TokenTransferContractParams> resultLauncher = registerForActivityResult(
+			new TokenTransferContract(),
+			result -> {
+				result.handleResult(
+						(successResult) -> {
+							tvResult.setText("Payment result:\n" + successResult.getBill().toString());
+						},
+						(failureResult) -> {
+							tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
+									"\n" + failureResult.getMessage());
+						},
+						() -> {
+							tvResult.setText("Payment has been cancelled");
+						});
+			}
+	);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,36 +132,11 @@ public class TokenTransferActivity
 						token
 				);
 
-				com.portmone.ecomsdk.ui.token.transfer.TokenTransferActivity.performTransaction(
-						this,
-						114,
+				resultLauncher.launch(new TokenTransferContractParams(
 						bigParams,
 						cbReceipt.isChecked(),
-						!cbDisableReturnToDetails.isChecked()
+						!cbDisableReturnToDetails.isChecked())
 				);
-				break;
-		}
-	}
-
-	@Override
-	protected void onActivityResult(
-			final int requestCode, final int resultCode, @Nullable final Intent data
-	) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == 114) {
-			if (resultCode == RESULT_OK && data != null) {
-				Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-				tvResult.setText("Payment result:\n" + bill.toString());
-			} else if (resultCode == RESULT_CANCELED) {
-				if (data != null && data.hasExtra(Constant$ExtraKey.ERROR_CODE)) {
-					int errorCode = data.getIntExtra(Constant$ExtraKey.ERROR_CODE, -1);
-					String errorMessage = data.getStringExtra(Constant$ExtraKey.ERROR_MESSAGE);
-					Log.d("PaymentActivity", "error code: " + errorCode + ", errorMessage: " + errorMessage);
-				} else {
-					//користувач вийшов з sdk без проходження всього flow оплати
-				}
-			}
 		}
 	}
 }

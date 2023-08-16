@@ -1,23 +1,11 @@
-//  Created on 2/18/19.
-//  Copyright © 2019 Portmone. All rights reserved.
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
 package com.portmone.sampleapp;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
@@ -25,17 +13,15 @@ import com.portmone.ecomsdk.PortmoneSDK;
 import com.portmone.ecomsdk.data.style.AppStyle;
 import com.portmone.ecomsdk.data.style.BlockTitleTextStyle;
 import com.portmone.ecomsdk.data.style.ButtonStyle;
-
 import com.portmone.ecomsdk.data.style.DialogStyle;
 import com.portmone.ecomsdk.data.style.EditTextStyle;
 import com.portmone.ecomsdk.data.style.TextStyle;
 import com.portmone.sampleapp.widget.ChooseColorView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class ThemeConfigureActivity
 		extends AppCompatActivity
 		implements View.OnClickListener, ColorPickerDialogListener {
+
 	public static String APP_STYLE = "APP_STYLE";
 	private ChooseColorView ccvBackground;
 	private ChooseColorView ccvToolbar;

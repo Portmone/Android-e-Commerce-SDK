@@ -1,43 +1,5 @@
-//  Created on 2/18/19.
-//  Copyright © 2019 Portmone. All rights reserved.
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
 package com.portmone.sampleapp;
 
-
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.portmone.ecomsdk.PortmoneSDK;
-import com.portmone.ecomsdk.data.Bill;
-import com.portmone.ecomsdk.data.CardPaymentParams;
-import com.portmone.ecomsdk.data.style.AppStyle;
-import com.portmone.ecomsdk.ui.card.CardPaymentActivity;
-import com.portmone.ecomsdk.util.Constant$BillCurrency;
-import com.portmone.ecomsdk.util.Constant$ExtraKey;
-import com.portmone.ecomsdk.util.Constant$Language;
-import com.portmone.ecomsdk.util.Constant$Type;
 
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.BYN;
 import static com.portmone.ecomsdk.util.Constant$BillCurrency.EUR;
@@ -51,10 +13,36 @@ import static com.portmone.ecomsdk.util.Constant$Language.RU;
 import static com.portmone.ecomsdk.util.Constant$Language.SYSTEM;
 import static com.portmone.ecomsdk.util.Constant$Language.UK;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.portmone.ecomsdk.PortmoneSDK;
+import com.portmone.ecomsdk.data.Bill;
+import com.portmone.ecomsdk.data.CardPaymentParams;
+import com.portmone.ecomsdk.data.contract_params.CardPaymentContractParams;
+import com.portmone.ecomsdk.data.style.AppStyle;
+import com.portmone.ecomsdk.ui.card.CardPaymentContract;
+import com.portmone.ecomsdk.util.Constant$BillCurrency;
+import com.portmone.ecomsdk.util.Constant$Language;
+import com.portmone.ecomsdk.util.Constant$Type;
+
 
 public class CardActivity
 		extends AppCompatActivity
 		implements View.OnClickListener {
+
+
 	private Spinner spCurrency;
 	private Spinner spLanguage;
 	private Spinner spTypes;
@@ -68,6 +56,7 @@ public class CardActivity
 	private EditText etAttribute4;
 	private EditText etAttribute5;
 	private EditText etAmount;
+	private EditText etEmailAddress;
 	private CheckBox cbReceipt;
 	private CheckBox cbDisableReturnToDetails;
 	private CheckBox cbGPayEnabled;
@@ -100,6 +89,26 @@ public class CardActivity
 			"ACCOUNT"
 	};
 
+	private ActivityResultLauncher<CardPaymentContractParams> resultLauncher = registerForActivityResult(
+			new CardPaymentContract(),
+			result -> {
+				result.handleResult(
+						(successResult) -> {
+							tvResult.setText("Payment result:\n" + successResult.getBill().toString());
+							if (!successResult.getPaidWithGooglePay()) {
+								saveCard(successResult.getBill());
+							}
+						},
+						(failureResult) -> {
+							tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
+									"\n" + failureResult.getMessage());
+						},
+						() -> {
+							tvResult.setText("Payment has been cancelled");
+						});
+			}
+	);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,6 +133,7 @@ public class CardActivity
 		spLanguage = findViewById(R.id.sp_language);
 		spTypes = findViewById(R.id.sp_types);
 		cbPreauth = findViewById(R.id.cb_preauth);
+		etEmailAddress = findViewById(R.id.et_email);
 
 		ArrayAdapter<String> currencies = new ArrayAdapter<>(this, R.layout.layout_spinner, R.id.txt_spinner);
 		currencies.addAll(this.currencies);
@@ -195,10 +205,9 @@ public class CardActivity
 						etAttribute5.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
 						etDescription.getText().toString(),
-						"",
 						cbOnlyGooglePay.isChecked(),
-						cbGoogleTest.isChecked()
-				);
+						cbGoogleTest.isChecked(),
+						TextUtils.isEmpty(etEmailAddress.getText().toString()) ? null : etEmailAddress.getText().toString());
 			} else {
 				bigParams = new CardPaymentParams(etPayeeId.getText().toString(),
 						etBillNumber.getText().toString(),
@@ -211,42 +220,15 @@ public class CardActivity
 						etAttribute5.getText().toString(),
 						Double.parseDouble(etAmount.getText().toString()),
 						etDescription.getText().toString(),
-						"");
+						TextUtils.isEmpty(etEmailAddress.getText().toString()) ? null : etEmailAddress.getText().toString()
+				);
 			}
-			CardPaymentActivity.performTransaction(
-					this,
-					111,
+
+			resultLauncher.launch(new CardPaymentContractParams(
 					bigParams,
 					cbReceipt.isChecked(),
-					!cbDisableReturnToDetails.isChecked()
+					!cbDisableReturnToDetails.isChecked())
 			);
-		}
-	}
-
-	@Override
-	protected void onActivityResult(
-			final int requestCode, final int resultCode, @Nullable final Intent data
-	) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == 111) {
-			if (resultCode == RESULT_OK && data != null) {
-				Bill bill = (Bill) data.getSerializableExtra(Constant$ExtraKey.BILL);
-				tvResult.setText("Payment result:\n" + bill.toString());
-
-				boolean paidThroughGooglePay = data.getBooleanExtra(Constant$ExtraKey.PAID_WITH_GOOGLE_PAY, false);
-				if (!paidThroughGooglePay) {
-					saveCard(bill);
-				}
-			} else if (resultCode == RESULT_CANCELED) {
-				if (data != null && data.hasExtra(Constant$ExtraKey.ERROR_CODE)) {
-					int errorCode = data.getIntExtra(Constant$ExtraKey.ERROR_CODE, -1);
-					String errorMessage = data.getStringExtra(Constant$ExtraKey.ERROR_MESSAGE);
-					Log.d("PaymentActivity", "error code: " + errorCode + ", errorMessage: " + errorMessage);
-				} else {
-					//користувач вийшов з sdk без проходження всього flow оплати
-				}
-			}
 		}
 	}
 
