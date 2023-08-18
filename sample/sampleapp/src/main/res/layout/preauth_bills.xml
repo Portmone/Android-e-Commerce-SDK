@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context=".TokenActivity">
+
+	<androidx.appcompat.widget.Toolbar
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@color/colorPrimary"
+		android:elevation="8dp"
+		app:title="Save card for massPay"
+		app:titleTextColor="@color/white"
+		tools:targetApi="lollipop" />
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fillViewport="true"
+		android:overScrollMode="never"
+		android:scrollbars="none">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:orientation="vertical"
+			android:padding="16dp"
+			tools:context=".PaymentActivity">
+
+			<TextView
+				android:id="@+id/tv_result"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textIsSelectable="true" />
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_attribute1"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="attribute1" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+			<com.google.android.material.textfield.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/et_contract_number"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:hint="contractNumber" />
+			</com.google.android.material.textfield.TextInputLayout>
+
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:gravity="center_vertical">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="16dp"
+					android:text="Language:" />
+
+				<Spinner
+					android:id="@+id/sp_language"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+
+			<Button
+				android:id="@+id/btn_open_preauth_bills"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:onClick="onClick"
+				android:text="Proceed preauth bills" />
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
