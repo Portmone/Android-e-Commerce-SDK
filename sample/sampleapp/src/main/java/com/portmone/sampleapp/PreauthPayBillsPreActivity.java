@@ -46,13 +46,16 @@ public class PreauthPayBillsPreActivity extends AppCompatActivity
                         (successResult) -> {
                             tvResult.setText("Payment result:\n" + successResult.getBill().toString());
                             saveCardBills(successResult.getBill());
+                            return null;
                         },
                         (failureResult) -> {
                             tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
                                     "\n" + failureResult.getMessage());
+                            return null;
                         },
                         () -> {
                             tvResult.setText("Payment has been cancelled");
+                            return null;
                         });
             }
     );

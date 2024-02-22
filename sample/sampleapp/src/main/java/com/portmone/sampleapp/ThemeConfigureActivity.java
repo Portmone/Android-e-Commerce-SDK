@@ -155,67 +155,67 @@ public class ThemeConfigureActivity
 
 	@Override
 	public void onClick(final View v) {
-		switch (v.getId()) {
-			case R.id.btn_clear:
-				appStyle = new AppStyle();
-				configureUIForStyle(appStyle);
-				break;
-			case R.id.btn_submit:
-				appStyle.setBackground(ccvBackground.getColor());
-				appStyle.setToolbarColor(ccvToolbar.getColor());
-				fillEditTextStyle();
-				fillButtonStyle();
-				fillTextBlockStyle();
-				fillTextTitleStyle();
-				fillPaymentDividerTextStyle();
-				fillTextStyle();
-				fillFPButtonStyle();
-				fillAddInfoTextStyle();
-				fillPaymentSuccessDownload();
-				fillDialogTextStyle();
-
-				PortmoneSDK.setAppStyle(appStyle);
-
-				setResult(RESULT_OK);
-				finish();
-				break;
-			case R.id.ccv_background:
-			case R.id.ccv_toolbar:
-			case R.id.ccv_background_input:
-			case R.id.ccv_btn_color:
-			case R.id.ccv_btn_color_pressed:
-			case R.id.ccv_btn_text:
-			case R.id.ccv_btn_text_pressed:
-			case R.id.ccv_payment_divider:
-			case R.id.ccv_fp_btn_text:
-			case R.id.ccv_input_txt:
-			case R.id.ccv_input_hint:
-			case R.id.ccv_input_error:
-			case R.id.ccv_block_title_txt:
-			case R.id.ccv_title_txt:
-			case R.id.ccv_description_txt:
-			case R.id.ccv_additional_info:
-			case R.id.ccv_payment_success_download:
-			case R.id.ccv_dialog_title:
-			case R.id.ccv_dialog_description:
-			case R.id.ccv_dialog_button:
-				chooseColorView = (ChooseColorView) v;
-				if (colorPicker != null) {
-					colorPicker.dismissAllowingStateLoss();
-				}
-				colorPicker = ColorPickerDialog.newBuilder()
-						.setAllowPresets(true)
-						.setDialogType(ColorPickerDialog.TYPE_PRESETS)
-						.setColor(chooseColorView.getColor())
-						.setShowAlphaSlider(true)
-						.setShowColorShades(true)
-						.create();
-				colorPicker.setColorPickerDialogListener(this);
-				colorPicker.show(getSupportFragmentManager(), ColorPickerDialog.class.getSimpleName());
-				break;
+		if(v.getId() == R.id.btn_clear) {
+			appStyle = new AppStyle();
+			configureUIForStyle(appStyle);
 		}
+		if(v.getId() == R.id.btn_submit) {
+			appStyle.setBackground(ccvBackground.getColor());
+			appStyle.setToolbarColor(ccvToolbar.getColor());
+			fillEditTextStyle();
+			fillButtonStyle();
+			fillTextBlockStyle();
+			fillTextTitleStyle();
+			fillPaymentDividerTextStyle();
+			fillTextStyle();
+			fillFPButtonStyle();
+			fillAddInfoTextStyle();
+			fillPaymentSuccessDownload();
+			fillDialogTextStyle();
+
+			PortmoneSDK.setAppStyle(appStyle);
+
+			setResult(RESULT_OK);
+			finish();
+		}
+		if(v.getId() == R.id.ccv_background) openColorPicker(v);
+		if(v.getId() == R.id.ccv_background) openColorPicker(v);
+		if(v.getId() == R.id.ccv_toolbar) openColorPicker(v);
+		if(v.getId() == R.id.ccv_background_input) openColorPicker(v);
+		if(v.getId() == R.id.ccv_btn_color) openColorPicker(v);
+		if(v.getId() == R.id.ccv_btn_color_pressed) openColorPicker(v);
+		if(v.getId() == R.id.ccv_btn_text) openColorPicker(v);
+		if(v.getId() == R.id.ccv_btn_text_pressed) openColorPicker(v);
+		if(v.getId() == R.id.ccv_payment_divider) openColorPicker(v);
+		if(v.getId() == R.id.ccv_fp_btn_text) openColorPicker(v);
+		if(v.getId() == R.id.ccv_input_txt) openColorPicker(v);
+		if(v.getId() == R.id.ccv_input_hint) openColorPicker(v);
+		if(v.getId() == R.id.ccv_input_error) openColorPicker(v);
+		if(v.getId() == R.id.ccv_block_title_txt) openColorPicker(v);
+		if(v.getId() == R.id.ccv_title_txt) openColorPicker(v);
+		if(v.getId() == R.id.ccv_description_txt) openColorPicker(v);
+		if(v.getId() == R.id.ccv_additional_info) openColorPicker(v);
+		if(v.getId() == R.id.ccv_payment_success_download) openColorPicker(v);
+		if(v.getId() == R.id.ccv_dialog_title) openColorPicker(v);
+		if(v.getId() == R.id.ccv_dialog_description) openColorPicker(v);
+		if(v.getId() == R.id.ccv_dialog_button) openColorPicker(v);
 	}
 
+	private void openColorPicker(View v){
+		chooseColorView = (ChooseColorView) v;
+		if (colorPicker != null) {
+			colorPicker.dismissAllowingStateLoss();
+		}
+		colorPicker = ColorPickerDialog.newBuilder()
+				.setAllowPresets(true)
+				.setDialogType(ColorPickerDialog.TYPE_PRESETS)
+				.setColor(chooseColorView.getColor())
+				.setShowAlphaSlider(true)
+				.setShowColorShades(true)
+				.create();
+		colorPicker.setColorPickerDialogListener(this);
+		colorPicker.show(getSupportFragmentManager(), ColorPickerDialog.class.getSimpleName());
+	}
 
 	@Override
 	protected void onDestroy() {

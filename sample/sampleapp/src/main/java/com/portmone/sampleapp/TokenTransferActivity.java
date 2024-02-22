@@ -57,13 +57,16 @@ public class TokenTransferActivity
 				result.handleResult(
 						(successResult) -> {
 							tvResult.setText("Payment result:\n" + successResult.getBill().toString());
+							return null;
 						},
 						(failureResult) -> {
 							tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
 									"\n" + failureResult.getMessage());
+							return null;
 						},
 						() -> {
 							tvResult.setText("Payment has been cancelled");
+							return null;
 						});
 			}
 	);
@@ -103,8 +106,7 @@ public class TokenTransferActivity
 
 	@Override
 	public void onClick(final View v) {
-		switch (v.getId()) {
-			case R.id.btn_open_payment_screen:
+		if(v.getId() == R.id.btn_open_payment_screen) {
 				if (id == null) {
 					Toast.makeText(this, "No saved card", Toast.LENGTH_SHORT).show();
 					return;

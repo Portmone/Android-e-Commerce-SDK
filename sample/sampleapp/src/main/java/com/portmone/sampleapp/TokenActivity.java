@@ -97,13 +97,16 @@ public class TokenActivity
 				result.handleResult(
 						(successResult) -> {
 							tvResult.setText("Payment result:\n" + successResult.getBill().toString());
+							return null;
 						},
 						(failureResult) -> {
 							tvResult.setText("Payment error:\n" + "Code" + failureResult.getCode() +
 									"\n" + failureResult.getMessage());
+							return null;
 						},
 						() -> {
 							tvResult.setText("Payment has been cancelled");
+							return null;
 						});
 			}
 	);
