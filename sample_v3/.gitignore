@@ -37,6 +37,5 @@ Thumbs.db
 build/
 src/main/java/
 src/main/res/drawable/
-/app/
 /.idea/
 /gradlew.bat
