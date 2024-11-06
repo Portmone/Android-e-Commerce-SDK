@@ -1,0 +1,84 @@
+[versions]
+agp = "8.4.2"
+kotlin = "2.0.20-RC2"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.3"
+activityCompose = "1.9.0"
+composeBom = "2024.06.00"
+appcompat = "1.7.0"
+material = "1.12.0"
+material3Android = "1.2.1"
+foundationLayoutAndroid = "1.6.8"
+startupRuntime = "1.1.1"
+uiToolingPreviewAndroid = "1.6.8"
+activity = "1.9.0"
+constraintlayout = "2.1.4"
+ioCard = "5.5.1"
+okhttp3LoggingInterceptor = "4.9.2"
+retrofit = "2.11.0"
+kotlinxSerializationJson = "1.7.1"
+navigationCompose = "2.7.7"
+playServisesWallet = "19.4.0"
+colorpicker = "1.1.0"
+biometricKtx = "1.2.0-alpha05"
+mixpanelRef = "7.5.2"
+portmoneSDK = "3.0.4"
+
+
+[libraries]
+portmone-sdk = { group = "com.portmone.ecomsdk", name = "ecomsdk", version.ref = "portmoneSDK" }
+
+mixpanel = { group = "com.mixpanel.android", name = "mixpanel-android", version.ref = "mixpanelRef" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric-ktx", version.ref = "biometricKtx" }
+
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+
+
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-runtime-livedata = {group = "androidx.compose.runtime", name = "runtime-livedata"}
+androidx-compose-runtime = {group = "androidx.compose.runtime", name = "runtime"}
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+io-card = {group = "io.card", name = "android-sdk", version.ref = "ioCard"}
+
+okhttp3-logging-interceptor = {group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3LoggingInterceptor"}
+retrofit2 = {group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
+retrofit2-converter-gson = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
+kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson"}
+google-services-wallet = {group = "com.google.android.gms", name = "play-services-wallet", version.ref = "playServisesWallet"}
+
+jaredrummler-colorpicker = {group = "com.jaredrummler", name = "colorpicker", version.ref = "colorpicker"}
+[plugins]
+
+
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+kotlinx-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
