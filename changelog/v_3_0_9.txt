@@ -1,0 +1,7 @@
+# Changelog v 3.0.9 date 2025-04-28
+
+
+### Fixed
+
+- fix crash SDK when minimizing the App restore App from stack App for screen 3d Secure
+

@@ -1,0 +1,9 @@
+# Changelog v 3.0.8 date 2025-04-02
+
+
+### Fixed
+
+- start gPay in mode gPayPrivat of CardPayment (there was no start gpay when click gPay - there was an endless loader)
+- fix amount in gPay request(it was possible that the display in Google Walletwas 1 UAH instead of amount to be debited)
+- Ui fixes - translate and padding in different screens
+
