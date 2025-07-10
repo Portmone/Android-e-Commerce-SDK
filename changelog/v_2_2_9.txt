@@ -1,0 +1,10 @@
+# Changelog v 2.2.9 date 2025-07-10
+
+
+### Fixed
+
+
+- fix amount in gPay request(it was possible that the display in Google Wallet was 1 UAH instead of amount to be debited)
+- fix gPay button, use button from com.google.android.gms.wallet.button.PayButton
+
+
