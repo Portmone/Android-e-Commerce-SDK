@@ -1,0 +1,13 @@
+# Changelog v 3.0.11 date 2025-10-03
+
+
+### Fixed
+
+- fixed in Mass payments
+- Removed: card.io library — incompatible with systems using 16 KB memory page sizes.
+The Google Pay Card Recognition API, which is part of Google Play Services, is now used. This requires additional SDK configuration by the user.
+Without the required configuration, card recognition will not be available, and users will be limited to manual card entry only.
+
+### Changed
+
+- The card.io library is not used, delete from build.gradle

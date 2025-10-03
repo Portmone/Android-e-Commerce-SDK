@@ -62,8 +62,6 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.foundation.layout.android)
 
-    implementation(libs.io.card)
-
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.retrofit2)
     implementation(libs.retrofit2.converter.gson)
