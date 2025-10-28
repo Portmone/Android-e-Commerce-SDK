@@ -19,7 +19,7 @@ constraintlayout = "2.1.4"
 ioCard = "5.5.1"
 okhttp3LoggingInterceptor = "4.9.2"
 retrofit = "2.11.0"
-kotlinxSerializationJson = "1.7.1"
+#kotlinxSerializationJson = "1.7.1"
 navigationCompose = "2.7.7"
 playServisesWallet = "19.4.0"
 colorpicker = "1.1.0"
@@ -66,7 +66,7 @@ io-card = {group = "io.card", name = "android-sdk", version.ref = "ioCard"}
 okhttp3-logging-interceptor = {group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3LoggingInterceptor"}
 retrofit2 = {group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
 retrofit2-converter-gson = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
-kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson"}
+#kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson"}
 google-services-wallet = {group = "com.google.android.gms", name = "play-services-wallet", version.ref = "playServisesWallet"}
 
 jaredrummler-colorpicker = {group = "com.jaredrummler", name = "colorpicker", version.ref = "colorpicker"}
