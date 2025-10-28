@@ -1,0 +1,8 @@
+# Changelog v 3.0.12 date 2025-10-28
+
+### Added
+- Displaying recipient details and payment details for split payments
+
+### Fixed
+
+- fixed in UI
