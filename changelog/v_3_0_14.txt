@@ -1,0 +1,6 @@
+# Changelog v 3.0.14 date 2026-01-23
+
+
+### Fixed
+
+- Fixed a rare, non-reproducible crash potentially related to minimizing an SDK-based application, its termination in the background, and subsequent restoration. Data was not being persisted correctly.
