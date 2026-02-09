@@ -215,7 +215,7 @@ public class CardActivity
 				appStyle = new AppStyle();
 			}
 			appStyle.setType(types[spTypes.getSelectedItemPosition()]);
-			PortmoneSDK.setAppStyle(appStyle);
+			PortmoneSDK.setAppStyle(appStyle,true);
 
 			if (etAmount.getText().toString().equals("")) {
 				Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();

@@ -20,6 +20,7 @@ import com.portmone.ecomsdk.data.style.AppStyle;
 import com.portmone.ecomsdk.data.style.ButtonStyle;
 import com.portmone.ecomsdk.data.style.EditTextStyle;
 import com.portmone.ecomsdk.data.style.EditTextStyleAdditional;
+import com.portmone.ecomsdk.data.style.GooglePayButtonTheme;
 import com.portmone.ecomsdk.data.style.TextStyle;
 
 public class MainActivity extends AppCompatActivity implements PortmoneSDK.PaymentCallback {
@@ -80,7 +81,14 @@ public class MainActivity extends AppCompatActivity implements PortmoneSDK.Payme
         buttonStyle.setDisabledBackgroundColor(Color.parseColor("#AFEEEE"));
         appStyle.setButtonStyle(buttonStyle);
 
-//        PortmoneSDK.setAppStyle(appStyle);
+        //default
+        appStyle.setGooglePayButtonTheme(GooglePayButtonTheme.AUTO);
+        //choose dark or light
+        appStyle.setGooglePayButtonTheme(GooglePayButtonTheme.DARK);
+        appStyle.setGooglePayButtonTheme(GooglePayButtonTheme.LIGHT);
+
+        //set GPayButton after set all appStyle
+//        PortmoneSDK.setAppStyle(appStyle, true);
 //        PortmoneSDK.setNameCompany("PORTMONE");
 //        PortmoneSDK.setAdditionalCustomize(true);
           PortmoneSDK.setStandartResultFlow(true);

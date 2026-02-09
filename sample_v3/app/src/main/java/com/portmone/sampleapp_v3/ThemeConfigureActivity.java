@@ -173,7 +173,7 @@ public class ThemeConfigureActivity
 			fillPaymentSuccessDownload();
 			fillDialogTextStyle();
 
-			PortmoneSDK.setAppStyle(appStyle);
+			PortmoneSDK.setAppStyle(appStyle, true);
 
 			setResult(RESULT_OK);
 			finish();
