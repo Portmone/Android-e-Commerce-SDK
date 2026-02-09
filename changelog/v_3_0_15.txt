@@ -1,0 +1,16 @@
+# Changelog v 3.0.15 date 2026-02-09
+
+
+### Added
+- SDK initialization method: call `PortmoneSDK.init(this)` in your `Application.onCreate()`.
+- `setAppStyle(AppStyle, boolean saveToDisk)` method now allows saving style changes to disk for persistence across app restarts.
+- Google Pay button style configuration: **Auto**, **Light**, or **Dark**.
+
+### Changed
+- `AppStyle` handling: styles are now loaded from disk automatically during SDK initialization.
+- Global variables (like `isUAHSymbol`) can now be persisted using `PersistentStorage`, reducing the need to save/restore in each SDK activity.
+- Status bar color handling on Android 15+: `AppStyle.statusColor` is now applied correctly instead of using the background color.
+
+### Fixed
+- Fixed Compose state restoration for `AppStyle` after process death.
+
