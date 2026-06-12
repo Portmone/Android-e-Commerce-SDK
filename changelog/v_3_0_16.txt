@@ -1,0 +1,56 @@
+# Changelog v 3.0.16 date 2026-06-11
+
+
+### Added
+- A new CardPaymentParams constructor has been added to support a new payment method — BankPay.
+    This feature allows initializing payments using BankPay. Most parameter names are self-explanatory.
+    Additional payment method flags:
+
+    first three false values disable Google Pay and PrivatPay
+    last two true values enable BankPay
+
+    Usage example:
+    CardPaymentParams(
+        etPayeeId.getText().toString(),
+        etBillNumber.getText().toString(),
+        etShopBillId.getText().toString(),
+        cbPreauth.isChecked(),
+        currencies[spCurrency.getSelectedItemPosition()],
+        etAttribute1.getText().toString(),
+        etAttribute2.getText().toString(),
+        etAttribute3.getText().toString(),
+        etAttribute4.getText().toString(),
+        etAttribute5.getText().toString(),
+        Double.parseDouble(etAmount.getText().toString()),
+        etDescription.getText().toString(),
+        false,
+        false,
+        TextUtils.isEmpty(etEmailAddress.getText().toString()) ? null : etEmailAddress.getText().toString(),
+        false,
+        true,
+        true,
+        etBankPayContrackNumber.getText().toString()
+    )
+
+- New callback interface added:
+
+    To handle BankPay events, implement:
+    PortmoneSDK.BankPayPaymentCallback
+
+    override fun bankPayPaymentSuccess(shopBillId: String, link: String) {
+        // handle successful payment
+    }
+
+    override fun bankPayPaymentError(code: Long, message: String?) {
+        // handle payment error
+    }
+
+    override fun bankPayPaymentToOther() {
+        // payment succeeded, user selected "Other payment method"
+    }
+
+    override fun bankPayPaymentToMainScreen() {
+        // payment succeeded, user returned to main screen
+    }
+
+
