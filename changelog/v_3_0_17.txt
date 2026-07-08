@@ -1,0 +1,5 @@
+# Changelog v 3.0.17 date 2026-07-08
+
+### Fixed
+- Fixed gPay payment
+
