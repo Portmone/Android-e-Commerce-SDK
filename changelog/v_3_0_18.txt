@@ -1,0 +1,28 @@
+# Changelog v 3.0.18 date 2026-09-07
+# MA-1615
+
+### Added
+- New param subscriptionInitPayment for card payment
+for use need call
+final CardPaymentParams bigParams
+bigParams = new CardPaymentParams(etPayeeId.getText().toString(),
+						etBillNumber.getText().toString(),
+						etShopBillId.getText().toString(),
+						cbPreauth.isChecked(),
+						currencies[spCurrency.getSelectedItemPosition()],
+						etAttribute1.getText().toString(),
+						etAttribute2.getText().toString(),
+						etAttribute3.getText().toString(),
+						etAttribute4.getText().toString(),
+						etAttribute5.getText().toString(),
+						Double.parseDouble(etAmount.getText().toString()),
+						etDescription.getText().toString(),
+						TextUtils.isEmpty(etEmailAddress.getText().toString()) ? null : etEmailAddress.getText().toString(),
+						cbSubscriptionInitPayment.isChecked() ? "Y" : "N"
+				);
+resultLauncher.launch(new CardPaymentContractParams(
+					bigParams,
+					cbReceipt.isChecked(),
+					!cbDisableReturnToDetails.isChecked())
+			);
+resultLauncher see in sample
