@@ -1,0 +1,7 @@
+# Changelog v 3.0.18.1 date 2026-11-12
+
+
+### Fixed
+
+- Fixed Google Pay token parsing issues caused by SDK obfuscation.
+
